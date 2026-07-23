@@ -126,6 +126,32 @@
     border-left:3px solid var(--gold);
     font-size:0.75rem;
   }
+  .popup-thumb{
+    width:100%;
+    max-width:220px;
+    border-radius:4px;
+    margin-bottom:8px;
+    cursor:zoom-in;
+    display:block;
+    border:1px solid var(--mortar);
+  }
+  #lightbox{
+    display:none;
+    position:fixed;
+    z-index:5000;
+    inset:0;
+    background:rgba(20,18,15,0.85);
+    align-items:center;
+    justify-content:center;
+    cursor:zoom-out;
+  }
+  #lightbox.open{display:flex;}
+  #lightbox img{
+    max-width:90vw;
+    max-height:90vh;
+    border-radius:4px;
+    box-shadow:0 8px 30px rgba(0,0,0,0.5);
+  }
   footer{
     position:absolute;
     z-index:1000;
@@ -170,6 +196,10 @@
   fixed site and aren't mapped — see the Street Art List. Some utility box locations are approximate (nearest intersection).
 </footer>
 
+<div id="lightbox" onclick="this.classList.remove('open')">
+  <img id="lightboxImg" src="" alt="Enlarged artwork photo">
+</div>
+
 <script>
   const art = [
     {name:"Village Point", category:"Architectural Installation", lat:39.950671, lng:-82.9826487, address:"647 Parsons Ave", artist:"Raffi Tomassian", funder:"Nationwide Children's Hospital, The Columbus Foundation, Tom E Daley Foundation"},
@@ -183,12 +213,12 @@
     {name:"Untitled (845 Parsons Ave)", category:"Murals", lat:39.9464249, lng:-82.9831235, address:"845 Parsons Ave", artist:"Unknown", funder:"Unknown"},
     {name:"Untitled (1071 Parsons Ave)", category:"Murals", lat:39.9416625, lng:-82.9835448, address:"1071 Parsons Ave", artist:"Carlos Roa", funder:"Rumours"},
     {name:"We The People | Nosotros La Gente", category:"Murals", lat:39.9429603, lng:-82.982706, address:"1014 Parsons Ave", artist:"Adam Hernandez", funder:"614 Beautiful grant"},
-    {name:"Bluebird Portal", category:"Murals", lat:39.9386368, lng:-82.9832004, address:"1220 Parsons Ave", artist:"Lucie Shearer", funder:"Unknown"},
+    {name:"Bluebird Portal", category:"Murals", lat:39.9386368, lng:-82.9832004, address:"1220 Parsons Ave", artist:"Lucie Shearer", funder:"Unknown", photo:"https://parsonsave.github.io/parsonsave/1220-Parsons.png"},
     {name:"Portal To Higher Consciousness", category:"Murals", lat:39.9311114, lng:-82.9841251, address:"1575 Parsons Ave", artist:"Gabrielle Atkins", funder:"Greater Columbus Arts Council"},
     {name:"All People Arts Cube", category:"Murals", lat:39.925094, lng:-82.984707, address:"1865 Parsons Ave", artist:"South of the building (art cube)", funder:null},
     {name:"Sowing Seeds", category:"Murals", lat:39.9225337, lng:-82.9841269, address:"2000 Parsons Ave", artist:"Dan Gerdeman", funder:"Columbus Relief"},
     {name:"Untitled (1924 Parsons Ave)", category:"Murals", lat:39.9239155, lng:-82.9842578, address:"1924 Parsons Ave", artist:"Unknown", funder:"Bex Pharmacy"},
-    {name:"Untitled (1856 Parsons Ave)", category:"Murals", lat:39.9253477, lng:-82.9841513, address:"1856 Parsons Ave", artist:"3 artists, unknown", funder:"Unknown"},
+    {name:"Untitled (1856 Parsons Ave)", category:"Murals", lat:39.9253477, lng:-82.9841513, address:"1856 Parsons Ave", artist:"3 artists, unknown", funder:"Unknown", photo:"https://parsonsave.github.io/parsonsave/1856-Parsons.png"},
     {name:"Untitled (1704 Parsons Ave)", category:"Murals", lat:39.9285325, lng:-82.9838427, address:"1704 Parsons Ave", artist:"Unknown", funder:"Unknown"},
     {name:"Untitled (1650 Parsons Ave)", category:"Murals", lat:39.9295816, lng:-82.9836031, address:"1650 Parsons Ave", artist:"Unknown", funder:"Unknown"},
     {name:"Untitled (1304 Parsons Ave)", category:"Murals", lat:39.9368766, lng:-82.9833141, address:"1304 Parsons Ave", artist:"Cat Ramos & xitlalicue.creation", funder:"Unknown"},
@@ -229,7 +259,9 @@
 
   art.forEach(a => {
     const marker = L.marker([a.lat, a.lng], { icon: makeIcon(a.category) }).addTo(map);
-    let html = `<div class="popup-title">${a.name}</div>`;
+    let html = "";
+    if (a.photo) html += `<img class="popup-thumb" src="${a.photo}" alt="${a.name}" onclick="openLightbox('${a.photo}')">`;
+    html += `<div class="popup-title">${a.name}</div>`;
     html += `<div class="popup-cat">${a.category}</div>`;
     html += `<div class="popup-row">${a.address}, Columbus, OH</div>`;
     html += `<div class="popup-row">Artist: ${a.artist}</div>`;
@@ -237,6 +269,11 @@
     if (a.flag) html += `<div class="popup-flag">${a.flag}</div>`;
     marker.bindPopup(html);
   });
+
+  function openLightbox(src){
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightbox').classList.add('open');
+  }
 </script>
 
 </body>

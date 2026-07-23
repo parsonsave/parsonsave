@@ -130,6 +130,32 @@
     flex-direction:column;
     gap:6px;
   }
+  .card .thumb{
+    width:100%;
+    aspect-ratio:4/3;
+    object-fit:cover;
+    border-radius:4px;
+    margin-bottom:6px;
+    cursor:zoom-in;
+    background:var(--mortar);
+  }
+  #lightbox{
+    display:none;
+    position:fixed;
+    z-index:5000;
+    inset:0;
+    background:rgba(20,18,15,0.85);
+    align-items:center;
+    justify-content:center;
+    cursor:zoom-out;
+  }
+  #lightbox.open{display:flex;}
+  #lightbox img{
+    max-width:90vw;
+    max-height:90vh;
+    border-radius:4px;
+    box-shadow:0 8px 30px rgba(0,0,0,0.5);
+  }
   .card .cat{
     display:inline-block;
     align-self:flex-start;
@@ -208,6 +234,10 @@
   artists/funders as recorded in the original inventory.
 </footer>
 
+<div id="lightbox" onclick="this.classList.remove('open')">
+  <img id="lightboxImg" src="" alt="Enlarged artwork photo">
+</div>
+
 <script>
   const art = [
     {name:"Village Point", category:"Architectural Installation", address:"647 Parsons Ave", location:"NW South Lane & Parsons", artist:"Raffi Tomassian", funder:"Nationwide Children's Hospital, The Columbus Foundation, Tom E Daley Foundation", flag:null},
@@ -221,12 +251,12 @@
     {name:"Untitled (845 Parsons Ave)", category:"Murals", address:"845 Parsons Ave", location:"North Side", artist:"Unknown", funder:"Unknown", flag:null},
     {name:"Untitled (1071 Parsons Ave)", category:"Murals", address:"1071 Parsons Ave", location:"South side", artist:"Carlos Roa", funder:"Rumours", flag:null},
     {name:"We The People | Nosotros La Gente", category:"Murals", address:"1014 Parsons Ave", location:"South Side", artist:"Adam Hernandez", funder:"614 Beautiful grant", flag:null},
-    {name:"Bluebird Portal", category:"Murals", address:"1220 Parsons Ave", location:"North & South", artist:"Lucie Shearer", funder:"Unknown", flag:null},
+    {name:"Bluebird Portal", category:"Murals", address:"1220 Parsons Ave", location:"North & South", artist:"Lucie Shearer", funder:"Unknown", flag:null, photo:"https://parsonsave.github.io/parsonsave/1220-Parsons.png"},
     {name:"Portal To Higher Consciousness", category:"Murals", address:"1575 Parsons Ave", location:"South Side", artist:"Gabrielle Atkins", funder:"Greater Columbus Arts Council", flag:null},
     {name:"All People Arts Cube", category:"Murals", address:"1865 Parsons Ave", location:"South Patio", artist:"South of the building (art cube)", funder:null, flag:null},
     {name:"Sowing Seeds", category:"Murals", address:"2000 Parsons Ave", location:"South side", artist:"Dan Gerdeman", funder:"Columbus Relief", flag:null},
     {name:"Untitled (1924 Parsons Ave)", category:"Murals", address:"1924 Parsons Ave", location:"South side", artist:"Unknown", funder:"Bex Pharmacy", flag:null},
-    {name:"Untitled (1856 Parsons Ave)", category:"Murals", address:"1856 Parsons Ave", location:"South side", artist:"3 artists, unknown", funder:"Unknown", flag:null},
+    {name:"Untitled (1856 Parsons Ave)", category:"Murals", address:"1856 Parsons Ave", location:"South side", artist:"3 artists, unknown", funder:"Unknown", flag:null, photo:"https://parsonsave.github.io/parsonsave/1856-Parsons.png"},
     {name:"Untitled (1704 Parsons Ave)", category:"Murals", address:"1704 Parsons Ave", location:"South side", artist:"Unknown", funder:"Unknown", flag:null},
     {name:"Untitled (1650 Parsons Ave)", category:"Murals", address:"1650 Parsons Ave", location:"South Side", artist:"Unknown", funder:"Unknown", flag:null},
     {name:"Untitled (1304 Parsons Ave)", category:"Murals", address:"1304 Parsons Ave", location:"North", artist:"Cat Ramos & xitlalicue.creation", funder:"Unknown", flag:null},
@@ -295,6 +325,7 @@
 
     gridEl.innerHTML = filtered.map(a => `
       <div class="card">
+        ${a.photo ? `<img class="thumb" src="${a.photo}" alt="${a.name}" onclick="openLightbox('${a.photo}')">` : ""}
         <span class="cat">${a.category}</span>
         <h3>${a.name}</h3>
         <div class="addr">${a.address}${a.location ? ` — ${a.location}` : ""}</div>
@@ -303,6 +334,11 @@
         ${a.flag ? `<div class="flag">${a.flag}</div>` : ""}
       </div>
     `).join("");
+  }
+
+  function openLightbox(src){
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightbox').classList.add('open');
   }
 
   function render() {
