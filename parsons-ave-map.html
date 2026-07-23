@@ -8,12 +8,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
   :root{
-    --brick:#a8462f;
-    --brick-dark:#7d3220;
-    --cream:#f2ece2;
-    --ink:#2b2420;
-    --mortar:#c9beac;
-    --gold:#c9962c;
+    --brick:#6e92ae;
+    --brick-dark:#4f697d;
+    --cream:#f3f6f1;
+    --ink:#262826;
+    --mortar:#a7cdb7;
+    --gold:#689760;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;height:100%;font-family:'Georgia','Times New Roman',serif;background:var(--cream);color:var(--ink);}
@@ -119,7 +119,7 @@
   .popup-event{
     margin-top:8px;
     padding:6px 8px;
-    background:#fdf1cf;
+    background:#eaf3e3;
     border-left:3px solid var(--gold);
     font-size:0.78rem;
   }
@@ -207,8 +207,8 @@
       className: '',
       html: `<div style="
         width:16px;height:16px;border-radius:50%;
-        background:${hasEvent ? '#c9962c' : '#a8462f'};
-        border:2px solid #f2ece2;
+        background:${hasEvent ? '#689760' : '#6e92ae'};
+        border:2px solid #f3f6f1;
         box-shadow:0 1px 3px rgba(0,0,0,0.4);
       "></div>`,
       iconSize: [16,16],
