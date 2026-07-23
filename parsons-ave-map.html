@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parsons Avenue — Livingston to Hosack</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  :root{
+    --brick:#a8462f;
+    --brick-dark:#7d3220;
+    --cream:#f2ece2;
+    --ink:#2b2420;
+    --mortar:#c9beac;
+    --gold:#c9962c;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;font-family:'Georgia','Times New Roman',serif;background:var(--cream);color:var(--ink);}
+  .sitenav{
+    background:var(--brick-dark);
+    display:flex;
+    flex-wrap:wrap;
+    position:relative;
+    z-index:1001;
+  }
+  .sitenav a{
+    color:var(--cream);
+    text-decoration:none;
+    padding:12px 18px;
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+  .sitenav a:hover{background:rgba(255,255,255,0.08);}
+  .sitenav a.current{background:var(--brick);font-weight:700;}
+
+  header{
+    background:var(--brick);
+    color:var(--cream);
+    padding:18px 24px;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+    border-bottom:4px solid var(--brick-dark);
+  }
+  header h1{
+    font-size:1.35rem;
+    margin:0;
+    letter-spacing:0.02em;
+    font-weight:600;
+  }
+  header p{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:0.8rem;
+    color:var(--mortar);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+  }
+  #map{
+    position:absolute;
+    top:108px;
+    bottom:0;
+    left:0;
+    right:0;
+  }
+  .legend{
+    position:absolute;
+    z-index:1000;
+    bottom:16px;
+    left:16px;
+    background:rgba(242,236,226,0.95);
+    border:1px solid var(--mortar);
+    border-radius:4px;
+    padding:10px 14px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:0.75rem;
+    line-height:1.6;
+    box-shadow:0 2px 6px rgba(0,0,0,0.15);
+  }
+  .legend .dot{
+    display:inline-block;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    margin-right:6px;
+    vertical-align:middle;
+  }
+  .dot.event{background:var(--gold);}
+  .dot.normal{background:var(--brick);}
+  .leaflet-popup-content-wrapper{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:Arial,Helvetica,sans-serif;
+    border-radius:3px;
+  }
+  .popup-title{
+    font-family:Georgia,serif;
+    font-size:1.05rem;
+    font-weight:700;
+    margin:0 0 4px 0;
+    color:var(--brick-dark);
+  }
+  .popup-cat{
+    display:inline-block;
+    font-size:0.65rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    background:var(--mortar);
+    color:var(--ink);
+    padding:2px 6px;
+    border-radius:2px;
+    margin-bottom:6px;
+  }
+  .popup-row{font-size:0.82rem;margin:3px 0;}
+  .popup-event{
+    margin-top:8px;
+    padding:6px 8px;
+    background:#fdf1cf;
+    border-left:3px solid var(--gold);
+    font-size:0.78rem;
+  }
+  .popup-links a{
+    color:var(--brick-dark);
+    text-decoration:none;
+    font-size:0.8rem;
+    margin-right:10px;
+  }
+  .popup-links a:hover{text-decoration:underline;}
+  footer{
+    position:absolute;
+    z-index:1000;
+    top:114px;
+    right:16px;
+    background:rgba(242,236,226,0.95);
+    border:1px solid var(--mortar);
+    border-radius:4px;
+    padding:8px 12px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:0.72rem;
+    max-width:220px;
+    color:#5c5346;
+  }
+</style>
+</head>
+<body>
+
+<nav class="sitenav">
+  <a href="index.html">Home</a>
+  <a href="parsons-ave-directory.html">Directory</a>
+  <a href="parsons-ave-map.html" class="current">Map</a>
+  <a href="parsons-ave-4week.html">Next 4 Weeks</a>
+</nav>
+
+<header>
+  <h1>Parsons Avenue — Livingston to Hosack</h1>
+  <p>Columbus, Ohio · South Side</p>
+</header>
+
+<div id="map"></div>
+
+<div class="legend">
+  <div><span class="dot event"></span>Has recurring/upcoming events</div>
+  <div><span class="dot normal"></span>No confirmed events</div>
+</div>
+
+<footer>
+  Data last updated July 23, 2026. Hours, ratings, and events may change — verify directly with the business before visiting.
+</footer>
+
+<script>
+  const businesses = [
+    {name:"The Mercury Diner", lat:39.951152, lng:-82.982748, address:"621 Parsons Ave", category:"Restaurant/Food", rating:4.3, phone:"+1 614-852-3036", website:"http://themercurydiner.com/", maps:"https://maps.google.com/?cid=10772334154208568096", event:null},
+    {name:"Alchemy Café", lat:39.9511234, lng:-82.9827089, address:"625 Parsons Ave", category:"Restaurant/Food", rating:4.1, phone:null, website:"https://www.ieatalchemy.com/", maps:"https://maps.google.com/?cid=7309185697606697616", event:null},
+    {name:"Comune", lat:39.9499619, lng:-82.9827201, address:"677 Parsons Ave", category:"Restaurant/Food", rating:4.7, phone:"+1 614-947-1012", website:"https://www.comune-restaurant.com/", maps:"https://maps.google.com/?cid=2078539393368119651", event:null},
+    {name:"Parsons North Brewing Company", lat:39.9498804, lng:-82.9827221, address:"685 Parsons Ave", category:"Bar/Brewery", rating:4.7, phone:"+1 614-824-4208", website:"http://parsonsnorth.com/", maps:"https://maps.google.com/?cid=4884628808325036382", event:"Weekly Trivia Night, Thursday Run Club, Bingo, and Euchre League. Quarterly Peter Parsons Trivia League finals — check parsonsnorth.com/events."},
+    {name:"East Public", lat:39.9497823, lng:-82.9828634, address:"687 Parsons Ave", category:"Event Venue", rating:null, phone:null, website:null, maps:"https://maps.google.com/?cid=11670775261102600258", event:null},
+    {name:"The Space Station Smoke Shop", lat:39.9480013, lng:-82.982861, address:"773 Parsons Ave", category:"Retail/Shop", rating:4.6, phone:null, website:null, maps:"https://maps.google.com/?cid=6618092428986219403", event:null},
+    {name:"Plank's Cafe & Pizzeria", lat:39.9484972, lng:-82.9828879, address:"743 Parsons Ave", category:"Restaurant/Food", rating:4.3, phone:"+1 614-445-7221", website:"https://www.plankscafe.com/", maps:"https://maps.google.com/?cid=2257936501950555863", event:null},
+    {name:"Pizzanos Express", lat:39.9473669, lng:-82.9823501, address:"804 Parsons Ave", category:"Restaurant/Food", rating:4.8, phone:"+1 614-824-1404", website:"https://pizzanosexpress.com/", maps:"https://maps.google.com/?cid=1787317908559200335", event:null},
+    {name:"All People's Fresh Market", lat:39.9445756, lng:-82.983283, address:"945 Parsons Ave", category:"Community/Nonprofit", rating:4.6, phone:"+1 614-445-7342", website:"http://www.4allpeople.org/freshmarket/", maps:"https://maps.google.com/?cid=15103820809653975561", event:null},
+    {name:"Free Store (UMC For All People)", lat:39.9443769, lng:-82.9827492, address:"946 Parsons Ave", category:"Community/Nonprofit", rating:4.5, phone:"+1 614-443-1713", website:"http://www.4allpeople.org/free-store", maps:"https://maps.google.com/?cid=8754442146206192935", event:null},
+    {name:"United Methodist Church For All People", lat:39.944367, lng:-82.982698, address:"946 Parsons Ave", category:"Community/Nonprofit", rating:4.7, phone:"+1 614-445-7342", website:"https://www.4allpeople.org/", maps:"https://maps.google.com/?cid=10871768442672426304", event:null},
+    {name:"aboutUs", lat:39.9436859, lng:-82.9831469, address:"975 Parsons Ave", category:"Retail/Shop", rating:4.6, phone:"+1 614-928-9101", website:null, maps:"https://maps.google.com/?cid=14823051011684019941", event:null},
+    {name:"Nook at The Creative Space", lat:39.9429603, lng:-82.982706, address:"1014 Parsons Ave Ste A", category:"Restaurant/Food", rating:4.8, phone:"+1 614-779-9191", website:"http://thenookspace.com/", maps:"https://maps.google.com/?cid=15498434539957579929", event:null},
+    {name:"Tee Jaye's Country Place", lat:39.9349237, lng:-82.9841053, address:"1385 Parsons Ave", category:"Restaurant/Food", rating:3.9, phone:"+1 614-444-6291", website:"http://www.teejayes.com/", maps:"https://maps.google.com/?cid=17286630677232320372", event:null},
+    {name:"Hair & Beauty Depot 3 (Parsons)", lat:39.9350309, lng:-82.9832257, address:"1400 Parsons Ave", category:"Beauty Supply", rating:5.0, phone:"+1 614-429-3450", website:null, maps:"https://maps.google.com/?cid=3688756942223426736", event:null},
+    {name:"NuFlava Gourmet Kitchen", lat:39.9318571, lng:-82.9836927, address:"1542 Parsons Ave", category:"Restaurant/Food", rating:4.8, phone:"+1 614-467-8790", website:"https://nuflavagourmetkitchen.com/", maps:"https://maps.google.com/?cid=15276524585613778434", event:null},
+    {name:"Smoke Outlet", lat:39.9298018, lng:-82.9843321, address:"1635 Parsons Ave", category:"Retail/Shop", rating:4.5, phone:"+1 614-449-1700", website:null, maps:"https://maps.google.com/?cid=6921156726911509516", event:null},
+    {name:"Infinity Plus Store & Hair Supplies", lat:39.9247188, lng:-82.9841534, address:"1880 Parsons Ave", category:"Beauty Supply", rating:4.2, phone:"+1 614-449-0021", website:null, maps:"https://maps.google.com/?cid=7622298261673312340", event:null}
+  ];
+
+  const map = L.map('map', { scrollWheelZoom: true }).setView([39.9375, -82.9835], 15);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  function makeIcon(hasEvent){
+    return L.divIcon({
+      className: '',
+      html: `<div style="
+        width:16px;height:16px;border-radius:50%;
+        background:${hasEvent ? '#c9962c' : '#a8462f'};
+        border:2px solid #f2ece2;
+        box-shadow:0 1px 3px rgba(0,0,0,0.4);
+      "></div>`,
+      iconSize: [16,16],
+      iconAnchor: [8,8],
+      popupAnchor: [0,-8]
+    });
+  }
+
+  businesses.forEach(b => {
+    const marker = L.marker([b.lat, b.lng], { icon: makeIcon(!!b.event) }).addTo(map);
+    let html = `<div class="popup-title">${b.name}</div>`;
+    html += `<div class="popup-cat">${b.category}</div>`;
+    html += `<div class="popup-row">${b.address}, Columbus, OH</div>`;
+    if (b.rating) html += `<div class="popup-row">★ ${b.rating}</div>`;
+    if (b.phone) html += `<div class="popup-row">${b.phone}</div>`;
+    if (b.event) html += `<div class="popup-event">${b.event}</div>`;
+    html += `<div class="popup-links" style="margin-top:8px;">`;
+    html += `<a href="${b.maps}" target="_blank" rel="noopener">View on Maps</a>`;
+    if (b.website) html += `<a href="${b.website}" target="_blank" rel="noopener">Website</a>`;
+    html += `</div>`;
+    marker.bindPopup(html);
+  });
+</script>
+
+</body>
+</html>

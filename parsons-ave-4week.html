@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parsons Avenue — 4-Week Events Snapshot</title>
+<style>
+  :root{
+    --brick:#a8462f;
+    --brick-dark:#7d3220;
+    --cream:#f2ece2;
+    --ink:#2b2420;
+    --mortar:#c9beac;
+    --gold:#c9962c;
+    --today:#fdf1cf;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--cream);color:var(--ink);font-family:Arial,Helvetica,sans-serif;}
+  .sitenav{
+    background:var(--brick-dark);
+    display:flex;
+    flex-wrap:wrap;
+  }
+  .sitenav a{
+    color:var(--cream);
+    text-decoration:none;
+    padding:12px 18px;
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+  .sitenav a:hover{background:rgba(255,255,255,0.08);}
+  .sitenav a.current{background:var(--brick);font-weight:700;}
+
+  header{
+    background:var(--brick);
+    color:var(--cream);
+    padding:20px 24px;
+    border-bottom:4px solid var(--brick-dark);
+  }
+  header h1{
+    margin:0 0 4px 0;
+    font-family:Georgia,serif;
+    font-size:1.5rem;
+  }
+  header p{
+    margin:0;
+    font-size:0.8rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--mortar);
+  }
+  .wrap{max-width:1050px;margin:0 auto;padding:20px;}
+  .legend{
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+    font-size:0.78rem;
+    margin-bottom:14px;
+    color:#5c5346;
+  }
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .swatch{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .swatch.weekly{background:var(--brick);}
+  .swatch.oneoff{background:var(--gold);}
+  table{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
+    background:#fff;
+    box-shadow:0 1px 4px rgba(0,0,0,0.08);
+  }
+  th{
+    background:var(--brick-dark);
+    color:var(--cream);
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    padding:8px 4px;
+    text-align:left;
+  }
+  td{
+    vertical-align:top;
+    border:1px solid var(--mortar);
+    height:100px;
+    padding:4px 6px;
+    font-size:0.72rem;
+    width:14.28%;
+  }
+  td.other-month{color:#a89e8c;}
+  td.today{background:var(--today);}
+  .daynum{font-weight:700;font-size:0.85rem;margin-bottom:3px;display:block;}
+  .monthtag{font-size:0.6rem;text-transform:uppercase;color:#a89e8c;font-weight:400;}
+  .evt{
+    background:var(--brick);
+    color:#fff;
+    border-radius:3px;
+    padding:2px 4px;
+    margin-bottom:2px;
+    font-size:0.68rem;
+    line-height:1.25;
+  }
+  .evt.oneoff{background:var(--gold);color:#2b2420;}
+  footer{
+    margin-top:16px;
+    font-size:0.72rem;
+    color:#5c5346;
+  }
+</style>
+</head>
+<body>
+
+<nav class="sitenav">
+  <a href="index.html">Home</a>
+  <a href="parsons-ave-directory.html">Directory</a>
+  <a href="parsons-ave-map.html">Map</a>
+  <a href="parsons-ave-4week.html" class="current">Next 4 Weeks</a>
+</nav>
+
+<header>
+  <h1>Parsons Avenue — Next 4 Weeks</h1>
+  <p>July 19 – August 15, 2026 · Livingston to Hosack</p>
+</header>
+
+<div class="wrap">
+  <div class="legend">
+    <span><span class="swatch weekly"></span>Recurring (weekly)</span>
+    <span><span class="swatch oneoff"></span>One-time event</span>
+  </div>
+
+  <table id="cal"></table>
+
+  <footer>
+    Recurring events are generated from a weekday + time rule (not separate Notion rows). One-time events come from
+    dated entries. Generated July 23, 2026 — this is a snapshot, not a live feed; regenerate for a new 4-week window
+    or whenever event data changes.
+  </footer>
+</div>
+
+<script>
+// ---- Recurring events: weekday-based rule, not individual dated rows ----
+const recurringEvents = [
+  { name: "Acoustic Mic Night", weekday: 1, time: "7:00 PM", venue: "Parsons North Brewing Co." }, // Monday
+  { name: "Trivia Night",       weekday: 2, time: "7:00 PM", venue: "Parsons North Brewing Co." }, // Tuesday
+  { name: "Run Club",           weekday: 4, time: "5:30 PM", venue: "Parsons North Brewing Co." }  // Thursday
+];
+
+// ---- One-time events: add real dated entries here as they come up ----
+const oneOffEvents = [
+  // { name: "Example Pop-Up", date: "2026-07-30", time: "6:00 PM", venue: "aboutUs" }
+];
+
+const startDate = new Date(2026, 6, 19); // Sunday, July 19, 2026 — regenerate to shift the window
+const today = new Date(2026, 6, 23);     // "today" at generation time
+const numDays = 28;
+
+const dayNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+let html = "<tr>" + dayNames.map(d => `<th>${d}</th>`).join("") + "</tr>";
+
+for (let row = 0; row < numDays / 7; row++) {
+  html += "<tr>";
+  for (let col = 0; col < 7; col++) {
+    const idx = row * 7 + col;
+    const cellDate = new Date(startDate);
+    cellDate.setDate(startDate.getDate() + idx);
+
+    const isToday = cellDate.toDateString() === today.toDateString();
+    const showMonthTag = cellDate.getDate() === 1 || idx === 0;
+    const monthName = cellDate.toLocaleString('en-US', { month: 'short' });
+
+    let inner = `<span class="daynum">${cellDate.getDate()}${showMonthTag ? ` <span class="monthtag">${monthName}</span>` : ''}</span>`;
+
+    recurringEvents.forEach(ev => {
+      if (cellDate.getDay() === ev.weekday) {
+        inner += `<div class="evt">${ev.name}<br>${ev.time}</div>`;
+      }
+    });
+
+    oneOffEvents.forEach(ev => {
+      const evDate = new Date(ev.date + "T00:00:00");
+      if (evDate.toDateString() === cellDate.toDateString()) {
+        inner += `<div class="evt oneoff">${ev.name}<br>${ev.time}</div>`;
+      }
+    });
+
+    html += `<td class="${isToday ? 'today' : ''}">${inner}</td>`;
+  }
+  html += "</tr>";
+}
+
+document.getElementById("cal").innerHTML = html;
+</script>
+
+</body>
+</html>

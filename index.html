@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parsons Avenue — Livingston to Hosack</title>
+<style>
+  :root{
+    --brick:#a8462f;
+    --brick-dark:#7d3220;
+    --cream:#f2ece2;
+    --paper:#fffdf9;
+    --ink:#2b2420;
+    --mortar:#c9beac;
+    --gold:#c9962c;
+    --muted:#8a7f6f;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--cream);color:var(--ink);font-family:Arial,Helvetica,sans-serif;}
+
+  .sitenav{
+    background:var(--brick-dark);
+    display:flex;
+    flex-wrap:wrap;
+  }
+  .sitenav a{
+    color:var(--cream);
+    text-decoration:none;
+    padding:12px 18px;
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+  .sitenav a:hover{background:rgba(255,255,255,0.08);}
+  .sitenav a.current{background:var(--brick);font-weight:700;}
+
+  header{
+    background:var(--brick);
+    color:var(--cream);
+    padding:56px 24px 44px;
+    text-align:center;
+    border-bottom:4px solid var(--brick-dark);
+  }
+  header .eyebrow{
+    font-size:0.75rem;
+    text-transform:uppercase;
+    letter-spacing:0.16em;
+    color:var(--mortar);
+    margin-bottom:10px;
+  }
+  header h1{
+    margin:0 0 10px 0;
+    font-family:Georgia,serif;
+    font-size:2.4rem;
+  }
+  header p.sub{
+    margin:0 auto;
+    max-width:520px;
+    font-size:1rem;
+    color:var(--mortar);
+  }
+
+  .cards{
+    max-width:1000px;
+    margin:0 auto;
+    padding:40px 20px 60px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:20px;
+  }
+
+  .card{
+    background:var(--paper);
+    border:1px solid var(--mortar);
+    border-radius:8px;
+    padding:26px 22px;
+    text-decoration:none;
+    color:var(--ink);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    transition:transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 6px 16px rgba(122,50,32,0.16);
+    border-color:var(--brick);
+  }
+  .card .icon{
+    font-size:1.8rem;
+    line-height:1;
+  }
+  .card h2{
+    margin:0;
+    font-family:Georgia,serif;
+    font-size:1.2rem;
+    color:var(--brick-dark);
+  }
+  .card p{
+    margin:0;
+    font-size:0.85rem;
+    color:var(--muted);
+    line-height:1.5;
+  }
+  .card .go{
+    margin-top:auto;
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--brick);
+    font-weight:700;
+  }
+
+  footer{
+    text-align:center;
+    font-size:0.75rem;
+    color:var(--muted);
+    padding:10px 20px 30px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="sitenav">
+  <a href="index.html" class="current">Home</a>
+  <a href="parsons-ave-directory.html">Directory</a>
+  <a href="parsons-ave-map.html">Map</a>
+  <a href="parsons-ave-4week.html">Next 4 Weeks</a>
+</nav>
+
+<header>
+  <div class="eyebrow">Columbus, Ohio · South Side</div>
+  <h1>Parsons Avenue</h1>
+  <p class="sub">Businesses, a map, and upcoming events along Parsons Avenue from Livingston Ave to Hosack St.</p>
+</header>
+
+<div class="cards">
+
+  <a class="card" href="parsons-ave-directory.html">
+    <div class="icon">🏬</div>
+    <h2>Business Directory</h2>
+    <p>Browse and search every business on the strip, filter by category, and link straight through to maps and websites.</p>
+    <div class="go">Browse the directory →</div>
+  </a>
+
+  <a class="card" href="parsons-ave-map.html">
+    <div class="icon">🗺️</div>
+    <h2>Interactive Map</h2>
+    <p>See every business pinned along Parsons Ave, with hours, ratings, and photos a tap away.</p>
+    <div class="go">Open the map →</div>
+  </a>
+
+  <a class="card" href="parsons-ave-4week.html">
+    <div class="icon">🗓️</div>
+    <h2>Next 4 Weeks</h2>
+    <p>A rolling four-week snapshot of what's coming up, starting from this Sunday.</p>
+    <div class="go">See what's next →</div>
+  </a>
+
+</div>
+
+<footer>
+  Data last updated July 23, 2026. Listings do not represent an affiliation with or endorsement of any organization.
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parsons Avenue Business Directory</title>
+<style>
+  :root{
+    --brick:#a8462f;
+    --brick-dark:#7d3220;
+    --cream:#f2ece2;
+    --paper:#fffdf9;
+    --ink:#2b2420;
+    --mortar:#c9beac;
+    --gold:#c9962c;
+    --muted:#8a7f6f;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--cream);color:var(--ink);font-family:Arial,Helvetica,sans-serif;}
+
+  .sitenav{
+    background:var(--brick-dark);
+    display:flex;
+    flex-wrap:wrap;
+  }
+  .sitenav a{
+    color:var(--cream);
+    text-decoration:none;
+    padding:12px 18px;
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+  .sitenav a:hover{background:rgba(255,255,255,0.08);}
+  .sitenav a.current{background:var(--brick);font-weight:700;}
+
+  header{
+    background:var(--brick);
+    color:var(--cream);
+    padding:36px 24px 28px;
+    text-align:center;
+    border-bottom:4px solid var(--brick-dark);
+  }
+  header .eyebrow{
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    color:var(--mortar);
+    margin-bottom:8px;
+  }
+  header h1{
+    margin:0 0 6px 0;
+    font-family:Georgia,serif;
+    font-size:2rem;
+  }
+  header p.sub{
+    margin:0;
+    font-size:0.92rem;
+    color:var(--mortar);
+    max-width:520px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .controls{
+    max-width:1080px;
+    margin:0 auto;
+    padding:24px 20px 0;
+  }
+  #search{
+    width:100%;
+    padding:12px 16px;
+    font-size:1rem;
+    border:1px solid var(--mortar);
+    border-radius:4px;
+    background:var(--paper);
+    color:var(--ink);
+    margin-bottom:16px;
+  }
+  #search:focus{outline:2px solid var(--brick);outline-offset:1px;}
+
+  .pills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:22px;
+  }
+  .pill{
+    border:1px solid var(--mortar);
+    background:var(--paper);
+    color:var(--ink);
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:0.78rem;
+    cursor:pointer;
+    user-select:none;
+  }
+  .pill.active{
+    background:var(--brick);
+    border-color:var(--brick);
+    color:#fff;
+  }
+  .pill:hover:not(.active){background:var(--mortar);}
+  .pill:focus-visible{outline:2px solid var(--brick-dark);outline-offset:2px;}
+
+  .count-row{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 20px;
+    font-size:0.8rem;
+    color:var(--muted);
+    margin-bottom:10px;
+  }
+
+  .grid{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 20px 40px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+    gap:16px;
+  }
+
+  .card{
+    background:var(--paper);
+    border:1px solid var(--mortar);
+    border-radius:6px;
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    position:relative;
+  }
+  .card .cat{
+    display:inline-block;
+    align-self:flex-start;
+    font-size:0.62rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    background:var(--mortar);
+    color:var(--ink);
+    padding:2px 8px;
+    border-radius:10px;
+    margin-bottom:4px;
+  }
+  .card h3{
+    margin:0;
+    font-family:Georgia,serif;
+    font-size:1.08rem;
+    color:var(--brick-dark);
+  }
+  .card .addr{font-size:0.82rem;color:var(--muted);}
+  .card .rating{font-size:0.82rem;color:var(--ink);}
+  .card .rating .stars{color:var(--gold);}
+  .card .event-badge{
+    margin-top:4px;
+    font-size:0.72rem;
+    background:#fdf1cf;
+    border-left:3px solid var(--gold);
+    padding:5px 8px;
+    color:#5c4a1e;
+  }
+  .card .links{
+    margin-top:auto;
+    padding-top:8px;
+    display:flex;
+    gap:12px;
+    font-size:0.8rem;
+  }
+  .card .links a{color:var(--brick-dark);text-decoration:none;}
+  .card .links a:hover{text-decoration:underline;}
+
+  .empty{
+    max-width:1080px;
+    margin:0 auto;
+    padding:40px 20px;
+    text-align:center;
+    color:var(--muted);
+    font-style:italic;
+  }
+
+  footer{
+    text-align:center;
+    font-size:0.75rem;
+    color:var(--muted);
+    padding:20px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="sitenav">
+  <a href="index.html">Home</a>
+  <a href="parsons-ave-directory.html" class="current">Directory</a>
+  <a href="parsons-ave-map.html">Map</a>
+  <a href="parsons-ave-4week.html">Next 4 Weeks</a>
+</nav>
+
+<header>
+  <div class="eyebrow">Columbus, Ohio · South Side</div>
+  <h1>Parsons Avenue Business Directory</h1>
+  <p class="sub">Discover the businesses along Parsons Avenue from Livingston Ave to Hosack St.</p>
+</header>
+
+<div class="controls">
+  <input type="text" id="search" placeholder="Search by name or address…">
+  <div class="pills" id="pills"></div>
+</div>
+
+<div class="count-row" id="countRow"></div>
+<div class="grid" id="grid"></div>
+<div class="empty" id="emptyMsg" style="display:none;">No businesses match your search.</div>
+
+<footer>
+  Data last updated July 23, 2026. Hours, ratings, and events may change — verify directly with the business.
+</footer>
+
+<script>
+  const businesses = [
+    {name:"The Mercury Diner", address:"621 Parsons Ave", category:"Restaurant/Food", rating:4.3, phone:"+1 614-852-3036", website:"http://themercurydiner.com/", maps:"https://maps.google.com/?cid=10772334154208568096", event:null},
+    {name:"Alchemy Café", address:"625 Parsons Ave", category:"Restaurant/Food", rating:4.1, phone:null, website:"https://www.ieatalchemy.com/", maps:"https://maps.google.com/?cid=7309185697606697616", event:null},
+    {name:"Comune", address:"677 Parsons Ave", category:"Restaurant/Food", rating:4.7, phone:"+1 614-947-1012", website:"https://www.comune-restaurant.com/", maps:"https://maps.google.com/?cid=2078539393368119651", event:null},
+    {name:"Parsons North Brewing Company", address:"685 Parsons Ave", category:"Bar/Brewery", rating:4.7, phone:"+1 614-824-4208", website:"http://parsonsnorth.com/", maps:"https://maps.google.com/?cid=4884628808325036382", event:"Weekly Trivia (Tue), Run Club (Thu), Acoustic Mic Night (Mon)"},
+    {name:"East Public", address:"687 Parsons Ave", category:"Event Venue", rating:null, phone:null, website:null, maps:"https://maps.google.com/?cid=11670775261102600258", event:null},
+    {name:"The Space Station Smoke Shop", address:"773 Parsons Ave", category:"Retail/Shop", rating:4.6, phone:null, website:null, maps:"https://maps.google.com/?cid=6618092428986219403", event:null},
+    {name:"Plank's Cafe & Pizzeria", address:"743 Parsons Ave", category:"Restaurant/Food", rating:4.3, phone:"+1 614-445-7221", website:"https://www.plankscafe.com/", maps:"https://maps.google.com/?cid=2257936501950555863", event:null},
+    {name:"Pizzanos Express", address:"804 Parsons Ave", category:"Restaurant/Food", rating:4.8, phone:"+1 614-824-1404", website:"https://pizzanosexpress.com/", maps:"https://maps.google.com/?cid=1787317908559200335", event:null},
+    {name:"All People's Fresh Market", address:"945 Parsons Ave", category:"Community/Nonprofit", rating:4.6, phone:"+1 614-445-7342", website:"http://www.4allpeople.org/freshmarket/", maps:"https://maps.google.com/?cid=15103820809653975561", event:null},
+    {name:"Free Store (UMC For All People)", address:"946 Parsons Ave", category:"Community/Nonprofit", rating:4.5, phone:"+1 614-443-1713", website:"http://www.4allpeople.org/free-store", maps:"https://maps.google.com/?cid=8754442146206192935", event:null},
+    {name:"United Methodist Church For All People", address:"946 Parsons Ave", category:"Community/Nonprofit", rating:4.7, phone:"+1 614-445-7342", website:"https://www.4allpeople.org/", maps:"https://maps.google.com/?cid=10871768442672426304", event:null},
+    {name:"aboutUs", address:"975 Parsons Ave", category:"Retail/Shop", rating:4.6, phone:"+1 614-928-9101", website:null, maps:"https://maps.google.com/?cid=14823051011684019941", event:null},
+    {name:"Nook at The Creative Space", address:"1014 Parsons Ave Ste A", category:"Restaurant/Food", rating:4.8, phone:"+1 614-779-9191", website:"http://thenookspace.com/", maps:"https://maps.google.com/?cid=15498434539957579929", event:null},
+    {name:"Tee Jaye's Country Place", address:"1385 Parsons Ave", category:"Restaurant/Food", rating:3.9, phone:"+1 614-444-6291", website:"http://www.teejayes.com/", maps:"https://maps.google.com/?cid=17286630677232320372", event:null},
+    {name:"Hair & Beauty Depot 3 (Parsons)", address:"1400 Parsons Ave", category:"Beauty Supply", rating:5.0, phone:"+1 614-429-3450", website:null, maps:"https://maps.google.com/?cid=3688756942223426736", event:null},
+    {name:"NuFlava Gourmet Kitchen", address:"1542 Parsons Ave", category:"Restaurant/Food", rating:4.8, phone:"+1 614-467-8790", website:"https://nuflavagourmetkitchen.com/", maps:"https://maps.google.com/?cid=15276524585613778434", event:null},
+    {name:"Smoke Outlet", address:"1635 Parsons Ave", category:"Retail/Shop", rating:4.5, phone:"+1 614-449-1700", website:null, maps:"https://maps.google.com/?cid=6921156726911509516", event:null},
+    {name:"Infinity Plus Store & Hair Supplies", address:"1880 Parsons Ave", category:"Beauty Supply", rating:4.2, phone:"+1 614-449-0021", website:null, maps:"https://maps.google.com/?cid=7622298261673312340", event:null}
+  ];
+
+  const categories = ["All", ...Array.from(new Set(businesses.map(b => b.category))).sort()];
+  let activeCategory = "All";
+  let searchTerm = "";
+
+  const pillsEl = document.getElementById("pills");
+  const gridEl = document.getElementById("grid");
+  const countRowEl = document.getElementById("countRow");
+  const emptyMsgEl = document.getElementById("emptyMsg");
+  const searchEl = document.getElementById("search");
+
+  function categoryCount(cat) {
+    if (cat === "All") return businesses.length;
+    return businesses.filter(b => b.category === cat).length;
+  }
+
+  function renderPills() {
+    pillsEl.innerHTML = categories.map(cat =>
+      `<button class="pill ${cat === activeCategory ? 'active' : ''}" data-cat="${cat}">${cat} (${categoryCount(cat)})</button>`
+    ).join("");
+    pillsEl.querySelectorAll(".pill").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeCategory = btn.dataset.cat;
+        render();
+      });
+    });
+  }
+
+  function matches(b) {
+    const inCategory = activeCategory === "All" || b.category === activeCategory;
+    const term = searchTerm.trim().toLowerCase();
+    const inSearch = !term ||
+      b.name.toLowerCase().includes(term) ||
+      b.address.toLowerCase().includes(term);
+    return inCategory && inSearch;
+  }
+
+  function renderCards() {
+    const filtered = businesses.filter(matches);
+    countRowEl.textContent = `${filtered.length} business${filtered.length === 1 ? '' : 'es'} shown`;
+    emptyMsgEl.style.display = filtered.length ? "none" : "block";
+
+    gridEl.innerHTML = filtered.map(b => `
+      <div class="card">
+        <span class="cat">${b.category}</span>
+        <h3>${b.name}</h3>
+        <div class="addr">${b.address}, Columbus, OH</div>
+        ${b.rating ? `<div class="rating"><span class="stars">★</span> ${b.rating.toFixed(1)}</div>` : ""}
+        ${b.phone ? `<div class="addr">${b.phone}</div>` : ""}
+        ${b.event ? `<div class="event-badge">${b.event}</div>` : ""}
+        <div class="links">
+          <a href="${b.maps}" target="_blank" rel="noopener">View on Maps</a>
+          ${b.website ? `<a href="${b.website}" target="_blank" rel="noopener">Website</a>` : ""}
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function render() {
+    renderPills();
+    renderCards();
+  }
+
+  searchEl.addEventListener("input", (e) => {
+    searchTerm = e.target.value;
+    renderCards();
+  });
+
+  render();
+</script>
+
+</body>
+</html>
