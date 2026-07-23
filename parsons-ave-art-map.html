@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parsons Avenue — Street Art Map</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  :root{
+    --brick:#a8462f;
+    --brick-dark:#7d3220;
+    --cream:#f2ece2;
+    --ink:#2b2420;
+    --mortar:#c9beac;
+    --gold:#c9962c;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;font-family:'Georgia','Times New Roman',serif;background:var(--cream);color:var(--ink);}
+
+  .sitenav{
+    background:var(--brick-dark);
+    display:flex;
+    flex-wrap:wrap;
+    position:relative;
+    z-index:1001;
+  }
+  .sitenav a{
+    color:var(--cream);
+    text-decoration:none;
+    padding:12px 18px;
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    font-family:Arial,Helvetica,sans-serif;
+  }
+  .sitenav a:hover{background:rgba(255,255,255,0.08);}
+  .sitenav a.current{background:var(--brick);font-weight:700;}
+
+  header{
+    background:var(--brick);
+    color:var(--cream);
+    padding:18px 24px;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+    border-bottom:4px solid var(--brick-dark);
+  }
+  header h1{
+    font-size:1.35rem;
+    margin:0;
+    letter-spacing:0.02em;
+    font-weight:600;
+  }
+  header p{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:0.8rem;
+    color:var(--mortar);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+  }
+  #map{
+    position:absolute;
+    top:108px;
+    bottom:0;
+    left:0;
+    right:0;
+  }
+  .legend{
+    position:absolute;
+    z-index:1000;
+    bottom:16px;
+    left:16px;
+    background:rgba(242,236,226,0.95);
+    border:1px solid var(--mortar);
+    border-radius:4px;
+    padding:10px 14px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:0.75rem;
+    line-height:1.6;
+    box-shadow:0 2px 6px rgba(0,0,0,0.15);
+  }
+  .legend .dot{
+    display:inline-block;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    margin-right:6px;
+    vertical-align:middle;
+  }
+  .dot.mural{background:var(--brick);}
+  .dot.utility{background:var(--gold);}
+  .dot.install{background:#5b7a63;}
+  .leaflet-popup-content-wrapper{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:Arial,Helvetica,sans-serif;
+    border-radius:3px;
+  }
+  .popup-title{
+    font-family:Georgia,serif;
+    font-size:1.05rem;
+    font-weight:700;
+    margin:0 0 4px 0;
+    color:var(--brick-dark);
+  }
+  .popup-cat{
+    display:inline-block;
+    font-size:0.65rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    background:var(--mortar);
+    color:var(--ink);
+    padding:2px 6px;
+    border-radius:2px;
+    margin-bottom:6px;
+  }
+  .popup-row{font-size:0.82rem;margin:3px 0;}
+  .popup-flag{
+    margin-top:8px;
+    padding:6px 8px;
+    background:#fdf1cf;
+    border-left:3px solid var(--gold);
+    font-size:0.75rem;
+  }
+  footer{
+    position:absolute;
+    z-index:1000;
+    top:114px;
+    right:16px;
+    background:rgba(242,236,226,0.95);
+    border:1px solid var(--mortar);
+    border-radius:4px;
+    padding:8px 12px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:0.72rem;
+    max-width:230px;
+    color:#5c5346;
+  }
+</style>
+</head>
+<body>
+
+<nav class="sitenav">
+  <a href="index.html">Home</a>
+  <a href="parsons-ave-directory.html">Directory</a>
+  <a href="parsons-ave-map.html">Map</a>
+  <a href="parsons-ave-4week.html">Next 4 Weeks</a>
+  <a href="parsons-ave-art-directory.html">Street Art List</a>
+  <a href="parsons-ave-art-map.html" class="current">Street Art Map</a>
+</nav>
+
+<header>
+  <h1>Parsons Avenue — Street Art Map</h1>
+  <p>Murals · Utility Boxes · Installations</p>
+</header>
+
+<div id="map"></div>
+
+<div class="legend">
+  <div><span class="dot mural"></span>Mural / Installation</div>
+  <div><span class="dot utility"></span>Utility Box Art</div>
+</div>
+
+<footer>
+  Source: 2026 Parsons Art Inventory (Neighborhood Design Center). Street Banners have no fixed site and aren't
+  mapped — see the Street Art List. Some utility box locations are approximate (nearest intersection).
+</footer>
+
+<script>
+  const art = [
+    {name:"Village Point", category:"Architectural Installation", lat:39.950671, lng:-82.9826487, address:"647 Parsons Ave", artist:"Raffi Tomassian", funder:"Nationwide Children's Hospital, The Columbus Foundation, Tom E Daley Foundation"},
+    {name:"Multicultural Roots", category:"Murals", lat:39.948113, lng:-82.9823402, address:"766 Parsons Ave", artist:"Ryan Orewiler", funder:"Unknown"},
+    {name:"All People's Fresh Market Mural", category:"Murals", lat:39.9445851, lng:-82.9832856, address:"945 Parsons Ave", artist:"John Sunami", funder:"Unknown"},
+    {name:"Fresh, Free, and Flourishing", category:"Murals", lat:39.9445851, lng:-82.9832856, address:"945 Parsons Ave", artist:"CoLab Studio 25", funder:"Neighborhood Design Center"},
+    {name:"Welcome to Southern Orchards", category:"Murals", lat:39.9443769, lng:-82.9827492, address:"946 Parsons Ave", artist:"Walt Neil", funder:"Unknown"},
+    {name:"Every Color Has a Place", category:"Murals", lat:39.9443233, lng:-82.9834596, address:"500 E Whittier St", artist:"Mark Warren Jacques", funder:"Bake Me Happy"},
+    {name:"Community Happens Here", category:"Murals", lat:39.9434739, lng:-82.9826737, address:"530 Reinhard Ave", artist:"Al Dilorenzo (coordinator) et al.", funder:"614 Beautiful grant"},
+    {name:"Welcome to Ganthers Place", category:"Murals", lat:39.9434739, lng:-82.9826737, address:"530 Reinhard Ave", artist:"Walt Neil (et al.)", funder:"All People Arts (Walt Neil Mural League)", flag:"West façade designed by 2 artists — NW by Reagan Buchanan, SW unidentified."},
+    {name:"Untitled (845 Parsons Ave)", category:"Murals", lat:39.9464249, lng:-82.9831235, address:"845 Parsons Ave", artist:"Unknown", funder:"Unknown"},
+    {name:"Untitled (1071 Parsons Ave)", category:"Murals", lat:39.9416625, lng:-82.9835448, address:"1071 Parsons Ave", artist:"Carlos Roa", funder:"Rumours"},
+    {name:"We The People | Nosotros La Gente", category:"Murals", lat:39.9429603, lng:-82.982706, address:"1014 Parsons Ave", artist:"Adam Hernandez", funder:"614 Beautiful grant"},
+    {name:"Bluebird Portal", category:"Murals", lat:39.9386368, lng:-82.9832004, address:"1220 Parsons Ave", artist:"Lucie Shearer", funder:"Unknown"},
+    {name:"Portal To Higher Consciousness", category:"Murals", lat:39.9311114, lng:-82.9841251, address:"1575 Parsons Ave", artist:"Gabrielle Atkins", funder:"Greater Columbus Arts Council"},
+    {name:"All People Arts Cube", category:"Murals", lat:39.925094, lng:-82.984707, address:"1865 Parsons Ave", artist:"South of the building (art cube)", funder:null},
+    {name:"Sowing Seeds", category:"Murals", lat:39.9225337, lng:-82.9841269, address:"2000 Parsons Ave", artist:"Dan Gerdeman", funder:"Columbus Relief"},
+    {name:"Untitled (1924 Parsons Ave)", category:"Murals", lat:39.9239155, lng:-82.9842578, address:"1924 Parsons Ave", artist:"Unknown", funder:"Bex Pharmacy"},
+    {name:"Untitled (1856 Parsons Ave)", category:"Murals", lat:39.9253477, lng:-82.9841513, address:"1856 Parsons Ave", artist:"3 artists, unknown", funder:"Unknown"},
+    {name:"Untitled (1704 Parsons Ave)", category:"Murals", lat:39.9285325, lng:-82.9838427, address:"1704 Parsons Ave", artist:"Unknown", funder:"Unknown"},
+    {name:"Untitled (1650 Parsons Ave) — needs verification", category:"Murals", lat:39.9295816, lng:-82.9836031, address:"1650 Parsons Ave", artist:"Unclear from source", funder:"Unknown", flag:"Source spreadsheet row was misaligned — location and artist fields were recovered from mismatched columns. Verify before relying on this pin."},
+    {name:"Untitled (1304 Parsons Ave)", category:"Murals", lat:39.9368766, lng:-82.9833141, address:"1304 Parsons Ave", artist:"Cat Ramos & xitlalicue.creation", funder:"Unknown"},
+    {name:"Columbus Steel Casting", category:"Utility Boxes", lat:39.9441861, lng:-82.9829758, address:"Whittier & Parsons", artist:"Larry Hamill", funder:null},
+    {name:"Deconstructive Eclipse", category:"Utility Boxes", lat:39.9415199, lng:-82.9831791, address:"Stewart & Parsons", artist:"Roger J. Williams", funder:null},
+    {name:"Downtown Riverfront", category:"Utility Boxes", lat:39.9392285, lng:-82.9833433, address:"Thurman & Parsons", artist:"Bill Wood", funder:null},
+    {name:"Schiller Park", category:"Utility Boxes", lat:39.9354952, lng:-82.9836497, address:"Frebis & Parsons", artist:"Larry Hamill", funder:null},
+    {name:"Sunflower Impressionism", category:"Utility Boxes", lat:39.9338132, lng:-82.9837706, address:"Sheldon & Parsons", artist:"Jean Adams", funder:null},
+    {name:"Spirit of South Side", category:"Utility Boxes", lat:39.9329643, lng:-82.9838358, address:"Jenkins & Parsons", artist:"John S. Sunami", funder:null},
+    {name:"Glass Memories", category:"Utility Boxes", lat:39.9311783, lng:-82.9839572, address:"Markison & Parsons", artist:"John S. Sunami", funder:null},
+    {name:"Walking Animals", category:"Utility Boxes", lat:39.9256705, lng:-82.9843593, address:"Innis & Parsons", artist:"Lynne R. Holmes", funder:null},
+    {name:"South Side Tulip Garden", category:"Utility Boxes", lat:39.9237558, lng:-82.9845022, address:"Marion & Parsons", artist:"Philip Skunza", funder:null},
+    {name:"Elbow Grease", category:"Utility Boxes", lat:39.9223219, lng:-82.9845977, address:"Hosack & Parsons", artist:"Ty Wright", funder:null}
+  ];
+
+  const map = L.map('map', { scrollWheelZoom: true }).setView([39.935, -82.9835], 14);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  function makeIcon(category){
+    const color = category === "Utility Boxes" ? '#c9962c' : (category === "Architectural Installation" ? '#5b7a63' : '#a8462f');
+    return L.divIcon({
+      className: '',
+      html: `<div style="
+        width:16px;height:16px;border-radius:50%;
+        background:${color};
+        border:2px solid #f2ece2;
+        box-shadow:0 1px 3px rgba(0,0,0,0.4);
+      "></div>`,
+      iconSize: [16,16],
+      iconAnchor: [8,8],
+      popupAnchor: [0,-8]
+    });
+  }
+
+  art.forEach(a => {
+    const marker = L.marker([a.lat, a.lng], { icon: makeIcon(a.category) }).addTo(map);
+    let html = `<div class="popup-title">${a.name}</div>`;
+    html += `<div class="popup-cat">${a.category}</div>`;
+    html += `<div class="popup-row">${a.address}, Columbus, OH</div>`;
+    html += `<div class="popup-row">Artist: ${a.artist}</div>`;
+    if (a.funder) html += `<div class="popup-row">Funder: ${a.funder}</div>`;
+    if (a.flag) html += `<div class="popup-flag">${a.flag}</div>`;
+    marker.bindPopup(html);
+  });
+</script>
+
+</body>
+</html>

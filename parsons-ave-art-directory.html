@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parsons Avenue — Street Art Directory</title>
+<style>
+  :root{
+    --brick:#a8462f;
+    --brick-dark:#7d3220;
+    --cream:#f2ece2;
+    --paper:#fffdf9;
+    --ink:#2b2420;
+    --mortar:#c9beac;
+    --gold:#c9962c;
+    --muted:#8a7f6f;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--cream);color:var(--ink);font-family:Arial,Helvetica,sans-serif;}
+
+  .sitenav{
+    background:var(--brick-dark);
+    display:flex;
+    flex-wrap:wrap;
+  }
+  .sitenav a{
+    color:var(--cream);
+    text-decoration:none;
+    padding:12px 18px;
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+  .sitenav a:hover{background:rgba(255,255,255,0.08);}
+  .sitenav a.current{background:var(--brick);font-weight:700;}
+
+  header{
+    background:var(--brick);
+    color:var(--cream);
+    padding:36px 24px 28px;
+    text-align:center;
+    border-bottom:4px solid var(--brick-dark);
+  }
+  header .eyebrow{
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    color:var(--mortar);
+    margin-bottom:8px;
+  }
+  header h1{
+    margin:0 0 6px 0;
+    font-family:Georgia,serif;
+    font-size:2rem;
+  }
+  header p.sub{
+    margin:0;
+    font-size:0.92rem;
+    color:var(--mortar);
+    max-width:520px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .controls{
+    max-width:1080px;
+    margin:0 auto;
+    padding:24px 20px 0;
+  }
+  #search{
+    width:100%;
+    padding:12px 16px;
+    font-size:1rem;
+    border:1px solid var(--mortar);
+    border-radius:4px;
+    background:var(--paper);
+    color:var(--ink);
+    margin-bottom:16px;
+  }
+  #search:focus{outline:2px solid var(--brick);outline-offset:1px;}
+
+  .pills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:22px;
+  }
+  .pill{
+    border:1px solid var(--mortar);
+    background:var(--paper);
+    color:var(--ink);
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:0.78rem;
+    cursor:pointer;
+    user-select:none;
+  }
+  .pill.active{
+    background:var(--brick);
+    border-color:var(--brick);
+    color:#fff;
+  }
+  .pill:hover:not(.active){background:var(--mortar);}
+  .pill:focus-visible{outline:2px solid var(--brick-dark);outline-offset:2px;}
+
+  .count-row{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 20px;
+    font-size:0.8rem;
+    color:var(--muted);
+    margin-bottom:10px;
+  }
+
+  .grid{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 20px 40px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+    gap:16px;
+  }
+
+  .card{
+    background:var(--paper);
+    border:1px solid var(--mortar);
+    border-radius:6px;
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .card .cat{
+    display:inline-block;
+    align-self:flex-start;
+    font-size:0.62rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    background:var(--mortar);
+    color:var(--ink);
+    padding:2px 8px;
+    border-radius:10px;
+    margin-bottom:4px;
+  }
+  .card h3{
+    margin:0;
+    font-family:Georgia,serif;
+    font-size:1.08rem;
+    color:var(--brick-dark);
+  }
+  .card .addr{font-size:0.82rem;color:var(--muted);}
+  .card .meta{font-size:0.82rem;}
+  .card .meta b{font-weight:700;color:var(--ink);}
+  .card .flag{
+    margin-top:4px;
+    font-size:0.72rem;
+    background:#fdf1cf;
+    border-left:3px solid var(--gold);
+    padding:5px 8px;
+    color:#5c4a1e;
+  }
+
+  .empty{
+    max-width:1080px;
+    margin:0 auto;
+    padding:40px 20px;
+    text-align:center;
+    color:var(--muted);
+    font-style:italic;
+  }
+
+  footer{
+    text-align:center;
+    font-size:0.75rem;
+    color:var(--muted);
+    padding:20px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="sitenav">
+  <a href="index.html">Home</a>
+  <a href="parsons-ave-directory.html">Directory</a>
+  <a href="parsons-ave-map.html">Map</a>
+  <a href="parsons-ave-4week.html">Next 4 Weeks</a>
+  <a href="parsons-ave-art-directory.html" class="current">Street Art List</a>
+  <a href="parsons-ave-art-map.html">Street Art Map</a>
+</nav>
+
+<header>
+  <div class="eyebrow">Columbus, Ohio · South Side</div>
+  <h1>Parsons Avenue Street Art</h1>
+  <p class="sub">Murals, utility box art, street banners, and installations along Parsons Ave.</p>
+</header>
+
+<div class="controls">
+  <input type="text" id="search" placeholder="Search by name, artist, or address…">
+  <div class="pills" id="pills"></div>
+</div>
+
+<div class="count-row" id="countRow"></div>
+<div class="grid" id="grid"></div>
+<div class="empty" id="emptyMsg" style="display:none;">No artwork matches your search.</div>
+
+<footer>
+  Source: 2026 Parsons Art Inventory (Neighborhood Design Center). Some entries have unknown artists/funders as
+  recorded in the original inventory. One entry is flagged as needing verification due to a source data issue.
+</footer>
+
+<script>
+  const art = [
+    {name:"Village Point", category:"Architectural Installation", address:"647 Parsons Ave", location:"NW South Lane & Parsons", artist:"Raffi Tomassian", funder:"Nationwide Children's Hospital, The Columbus Foundation, Tom E Daley Foundation", flag:null},
+    {name:"Multicultural Roots", category:"Murals", address:"766 Parsons Ave", location:"South side", artist:"Ryan Orewiler", funder:"Unknown", flag:null},
+    {name:"All People's Fresh Market Mural", category:"Murals", address:"945 Parsons Ave", location:"North Side", artist:"John Sunami", funder:"Unknown", flag:null},
+    {name:"Fresh, Free, and Flourishing", category:"Murals", address:"945 Parsons Ave", location:"South side", artist:"CoLab Studio 25", funder:"Neighborhood Design Center", flag:null},
+    {name:"Welcome to Southern Orchards", category:"Murals", address:"946 Parsons Ave", location:"South side", artist:"Walt Neil", funder:"Unknown", flag:null},
+    {name:"Every Color Has a Place", category:"Murals", address:"500 E Whittier St", location:"East Side", artist:"Mark Warren Jacques", funder:"Bake Me Happy", flag:null},
+    {name:"Community Happens Here", category:"Murals", address:"530 Reinhard Ave", location:"Alley side (north)", artist:"Al Dilorenzo (coordinator) et al.", funder:"614 Beautiful grant", flag:null},
+    {name:"Welcome to Ganthers Place", category:"Murals", address:"530 Reinhard Ave", location:"West & south sides", artist:"Walt Neil (et al.)", funder:"All People Arts (Walt Neil Mural League)", flag:"West façade designed by 2 artists — NW by Reagan Buchanan, SW by an unidentified artist."},
+    {name:"Untitled (845 Parsons Ave)", category:"Murals", address:"845 Parsons Ave", location:"North Side", artist:"Unknown", funder:"Unknown", flag:null},
+    {name:"Untitled (1071 Parsons Ave)", category:"Murals", address:"1071 Parsons Ave", location:"South side", artist:"Carlos Roa", funder:"Rumours", flag:null},
+    {name:"We The People | Nosotros La Gente", category:"Murals", address:"1014 Parsons Ave", location:"South Side", artist:"Adam Hernandez", funder:"614 Beautiful grant", flag:null},
+    {name:"Bluebird Portal", category:"Murals", address:"1220 Parsons Ave", location:"North & South", artist:"Lucie Shearer", funder:"Unknown", flag:null},
+    {name:"Portal To Higher Consciousness", category:"Murals", address:"1575 Parsons Ave", location:"South Side", artist:"Gabrielle Atkins", funder:"Greater Columbus Arts Council", flag:null},
+    {name:"All People Arts Cube", category:"Murals", address:"1865 Parsons Ave", location:"South Patio", artist:"South of the building (art cube)", funder:null, flag:null},
+    {name:"Sowing Seeds", category:"Murals", address:"2000 Parsons Ave", location:"South side", artist:"Dan Gerdeman", funder:"Columbus Relief", flag:null},
+    {name:"Untitled (1924 Parsons Ave)", category:"Murals", address:"1924 Parsons Ave", location:"South side", artist:"Unknown", funder:"Bex Pharmacy", flag:null},
+    {name:"Untitled (1856 Parsons Ave)", category:"Murals", address:"1856 Parsons Ave", location:"South side", artist:"3 artists, unknown", funder:"Unknown", flag:null},
+    {name:"Untitled (1704 Parsons Ave)", category:"Murals", address:"1704 Parsons Ave", location:"South side", artist:"Unknown", funder:"Unknown", flag:null},
+    {name:"Untitled (1650 Parsons Ave) — needs verification", category:"Murals", address:"1650 Parsons Ave", location:"South Side (recovered value)", artist:"Unclear from source", funder:"Unknown", flag:"Source spreadsheet row was misaligned — name, funder, and address fields were blank, and this data was recovered from mismatched columns. Verify against the original inventory."},
+    {name:"Untitled (1304 Parsons Ave)", category:"Murals", address:"1304 Parsons Ave", location:"North", artist:"Cat Ramos & xitlalicue.creation", funder:"Unknown", flag:null},
+    {name:"Columbus Steel Casting", category:"Utility Boxes", address:"Whittier & Parsons", location:null, artist:"Larry Hamill", funder:null, flag:null},
+    {name:"Deconstructive Eclipse", category:"Utility Boxes", address:"Stewart & Parsons", location:null, artist:"Roger J. Williams", funder:null, flag:null},
+    {name:"Downtown Riverfront", category:"Utility Boxes", address:"Thurman & Parsons", location:null, artist:"Bill Wood", funder:null, flag:null},
+    {name:"Schiller Park", category:"Utility Boxes", address:"Frebis & Parsons", location:null, artist:"Larry Hamill", funder:null, flag:null},
+    {name:"Sunflower Impressionism", category:"Utility Boxes", address:"Sheldon & Parsons", location:null, artist:"Jean Adams", funder:null, flag:null},
+    {name:"Spirit of South Side", category:"Utility Boxes", address:"Jenkins & Parsons", location:null, artist:"John S. Sunami", funder:null, flag:null},
+    {name:"Glass Memories", category:"Utility Boxes", address:"Markison & Parsons", location:null, artist:"John S. Sunami", funder:null, flag:null},
+    {name:"Walking Animals", category:"Utility Boxes", address:"Innis & Parsons", location:null, artist:"Lynne R. Holmes", funder:null, flag:null},
+    {name:"South Side Tulip Garden", category:"Utility Boxes", address:"Marion & Parsons", location:null, artist:"Philip Skunza", funder:null, flag:null},
+    {name:"Elbow Grease", category:"Utility Boxes", address:"Hosack & Parsons", location:null, artist:"Ty Wright", funder:null, flag:null},
+    {name:"Common", category:"Street Banners", address:"No fixed site (displayed seasonally along Parsons Ave)", location:null, artist:"Adam Brouillette", funder:"614 Beautiful Grant", flag:null},
+    {name:"Butterflies", category:"Street Banners", address:"No fixed site (displayed seasonally along Parsons Ave)", location:null, artist:"Shelbi Toone", funder:"614 Beautiful Grant", flag:null},
+    {name:"Scott Wood", category:"Street Banners", address:"No fixed site (displayed seasonally along Parsons Ave)", location:null, artist:"Unknown", funder:"614 Beautiful Grant", flag:null},
+    {name:"Sports", category:"Street Banners", address:"No fixed site (displayed seasonally along Parsons Ave)", location:null, artist:"Unknown", funder:"614 Beautiful Grant", flag:null},
+    {name:"Firehouse & Bakery", category:"Street Banners", address:"No fixed site (displayed seasonally along Parsons Ave)", location:null, artist:"Unknown", funder:"614 Beautiful Grant", flag:null},
+    {name:"Plant Pride", category:"Street Banners", address:"No fixed site (displayed seasonally along Parsons Ave)", location:null, artist:"Unknown", funder:"614 Beautiful Grant", flag:null},
+    {name:"South Side Drive In", category:"Street Banners", address:"No fixed site (displayed seasonally along Parsons Ave)", location:null, artist:"Unknown", funder:"614 Beautiful Grant", flag:null},
+    {name:"Group of People", category:"Street Banners", address:"No fixed site (displayed seasonally along Parsons Ave)", location:null, artist:"Unknown", funder:"614 Beautiful Grant", flag:null},
+    {name:"Walt Neil", category:"Street Banners", address:"No fixed site (displayed seasonally along Parsons Ave)", location:null, artist:"Raeghan Buchanan", funder:"614 Beautiful Grant", flag:null}
+  ];
+
+  const categories = ["All", ...Array.from(new Set(art.map(a => a.category))).sort()];
+  let activeCategory = "All";
+  let searchTerm = "";
+
+  const pillsEl = document.getElementById("pills");
+  const gridEl = document.getElementById("grid");
+  const countRowEl = document.getElementById("countRow");
+  const emptyMsgEl = document.getElementById("emptyMsg");
+  const searchEl = document.getElementById("search");
+
+  function categoryCount(cat) {
+    if (cat === "All") return art.length;
+    return art.filter(a => a.category === cat).length;
+  }
+
+  function renderPills() {
+    pillsEl.innerHTML = categories.map(cat =>
+      `<button class="pill ${cat === activeCategory ? 'active' : ''}" data-cat="${cat}">${cat} (${categoryCount(cat)})</button>`
+    ).join("");
+    pillsEl.querySelectorAll(".pill").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeCategory = btn.dataset.cat;
+        render();
+      });
+    });
+  }
+
+  function matches(a) {
+    const inCategory = activeCategory === "All" || a.category === activeCategory;
+    const term = searchTerm.trim().toLowerCase();
+    const inSearch = !term ||
+      a.name.toLowerCase().includes(term) ||
+      (a.artist && a.artist.toLowerCase().includes(term)) ||
+      a.address.toLowerCase().includes(term);
+    return inCategory && inSearch;
+  }
+
+  function renderCards() {
+    const filtered = art.filter(matches);
+    countRowEl.textContent = `${filtered.length} piece${filtered.length === 1 ? '' : 's'} shown`;
+    emptyMsgEl.style.display = filtered.length ? "none" : "block";
+
+    gridEl.innerHTML = filtered.map(a => `
+      <div class="card">
+        <span class="cat">${a.category}</span>
+        <h3>${a.name}</h3>
+        <div class="addr">${a.address}${a.location ? ` — ${a.location}` : ""}</div>
+        <div class="meta"><b>Artist:</b> ${a.artist}</div>
+        ${a.funder ? `<div class="meta"><b>Funder:</b> ${a.funder}</div>` : ""}
+        ${a.flag ? `<div class="flag">${a.flag}</div>` : ""}
+      </div>
+    `).join("");
+  }
+
+  function render() {
+    renderPills();
+    renderCards();
+  }
+
+  searchEl.addEventListener("input", (e) => {
+    searchTerm = e.target.value;
+    renderCards();
+  });
+
+  render();
+</script>
+
+</body>
+</html>
