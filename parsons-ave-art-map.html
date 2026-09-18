@@ -94,6 +94,7 @@
   .dot.mural{background:var(--brick);}
   .dot.utility{background:var(--gold);}
   .dot.install{background:#a6c5c9;}
+  .dot.indoor{background:#6e736f;}
   .leaflet-popup-content-wrapper{
     background:var(--cream);
     color:var(--ink);
@@ -189,6 +190,7 @@
 <div class="legend">
   <div><span class="dot mural"></span>Mural / Installation</div>
   <div><span class="dot utility"></span>Utility Box Art</div>
+  <div><span class="dot indoor"></span>Indoor Collection</div>
 </div>
 
 <footer>
@@ -218,7 +220,7 @@
     {name:"Portal To Higher Consciousness", category:"Murals", lat:39.9311114, lng:-82.9841251, address:"1575 Parsons Ave", artist:"Gabrielle Atkins", funder:"Greater Columbus Arts Council", photo:"https://parsonsave.github.io/parsonsave/1575%20Parsons%20Ave.jpg"},
     {name:"All People Arts Cube", category:"Murals", lat:39.925094, lng:-82.984707, address:"1865 Parsons Ave", artist:"Queen Brooks", funder:"All People Arts", photo:"https://parsonsave.github.io/parsonsave/1865%20Parsons%20Ave.jpg"},
     {name:"Sowing Seeds", category:"Murals", lat:39.9225337, lng:-82.9841269, address:"2000 Parsons Ave", artist:"Dan Gerdeman", funder:"Columbus Relief", photo:"https://parsonsave.github.io/parsonsave/2000%20Parsons%20Ave.jpg"},
-    {name:"Untitled (1924 Parsons Ave)", category:"Murals", lat:39.9239155, lng:-82.9842578, address:"1924 Parsons Ave", artist:"Unknown", funder:"Bex Pharmacy", photo:"https://parsonsave.github.io/parsonsave/1924%20Parsons%20Ave.jpg"},
+    {name:"Spring Bloom", category:"Murals", lat:39.9239155, lng:-82.9842578, address:"1924 Parsons Ave", artist:"Jack Smith", funder:"Bex Pharmacy", photo:"https://parsonsave.github.io/parsonsave/1924%20Parsons%20Ave.jpg"},
     {name:"Untitled (1856 Parsons Ave)", category:"Murals", lat:39.9253477, lng:-82.9841513, address:"1856 Parsons Ave", artist:"Chocolate Rose, Corey G, Luke Jackson, Isabelle Crawford", funder:"Schwarz Tax Service and House of Cai", photo:"https://parsonsave.github.io/parsonsave/1856-Parsons.png"},
     {name:"Freedom Isn't Free", category:"Murals", lat:39.9285325, lng:-82.9838427, address:"1704 Parsons Ave", artist:"Fritz", funder:"Brian Daniel", photo:"https://parsonsave.github.io/parsonsave/1704%20Parsons%20Ave.jpg"},
     {name:"Untitled (1650 Parsons Ave)", category:"Murals", lat:39.9295816, lng:-82.9836031, address:"1650 Parsons Ave", artist:"Unknown", funder:"Unknown", photo:"https://parsonsave.github.io/parsonsave/1650%20Parsons%20Ave.jpg"},
@@ -226,6 +228,7 @@
     {name:"Martial Honor", category:"Murals", lat:39.9242049, lng:-82.9848262, address:"1911 Parsons Ave", artist:"Carlos Roa", funder:"The Technician Dojo", photo:"https://parsonsave.github.io/parsonsave/1911%20Parsons%20Ave.jpg"},
     {name:"Remembering Columbus COVID Memorial", category:"Murals", lat:39.9435568, lng:-82.982664, address:"980 Parsons Avenue", artist:"Raeghan Buchanan, assisted by Bryan Christopher Moss", funder:"Columbus Rec & Parks, ARtsway grant", photo:"https://parsonsave.github.io/parsonsave/980%20Parsons%20Ave%20south%20-%20west.jpg"},
     {name:"She Can", category:"Murals", lat:39.9435568, lng:-82.982664, address:"980 Parsons Avenue", artist:"Felicia Dunson, assisted by Duarte", funder:"Columbus Rec & Parks, ARtsway grant", photo:"https://parsonsave.github.io/parsonsave/980%20Parsons%20Ave%20north%20-%20west.jpg"},
+    {name:"Spectrum 2016", category:"Indoor Collection", lat:39.9413307, lng:-82.9833446, address:"1113 Parsons Avenue", artist:"David Scanavino", funder:"Columbus Metropolitan Library", photo:"https://raw.githubusercontent.com/parsonsave/parsonsave/main/Scanavino__David__Spectrum.jpg"},
     {name:"Columbus Steel Casting", category:"Utility Boxes", lat:39.9441861, lng:-82.9829758, address:"Whittier & Parsons", artist:"Larry Hamill", funder:null, photo:"https://parsonsave.github.io/parsonsave/Columbus-Castings.jpg"},
     {name:"Deconstructive Eclipse", category:"Utility Boxes", lat:39.9415199, lng:-82.9831791, address:"Stewart & Parsons", artist:"Roger J. Williams", funder:null, photo:"https://parsonsave.github.io/parsonsave/Deconstructive%20Eclipse.jpg"},
     {name:"Downtown Riverfront", category:"Utility Boxes", lat:39.9392285, lng:-82.9833433, address:"Thurman & Parsons", artist:"Bill Wood", funder:null, photo:"https://parsonsave.github.io/parsonsave/Downtown%20Riverfront.jpg"},
@@ -246,7 +249,7 @@
   }).addTo(map);
 
   function makeIcon(category){
-    const color = category === "Utility Boxes" ? '#689760' : (category === "Architectural Installation" ? '#a6c5c9' : '#6e92ae');
+    const color = category === "Utility Boxes" ? '#689760' : (category === "Architectural Installation" ? '#a6c5c9' : (category === "Indoor Collection" ? '#6e736f' : '#6e92ae'));
     return L.divIcon({
       className: '',
       html: `<div style="
