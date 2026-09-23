@@ -240,6 +240,7 @@
 
 <script>
   const art = [
+    {name:"Art From the Inside", category:"Exhibition", address:"1865 Parsons Ave", location:"South Patio", artist:"Currently and formerly incarcerated artists", curator:"All People Arts (APA) and the Ohio Department of Rehabilitation and Correction", website:"https://allpeoplearts.org", exhibitionStart:"2026-08-14", exhibitionEnd:"2026-10-28", flag:null},
     {name:"Village Point", category:"Architectural Installation", address:"647 Parsons Ave", location:"NW South Lane & Parsons", artist:"Raffi Tomassian", funder:"Nationwide Children's Hospital, The Columbus Foundation, Tom E Daley Foundation", flag:null, photo:"https://parsonsave.github.io/parsonsave/Village%20Point.jpg"},
     {name:"Multicultural Roots", category:"Murals", address:"766 Parsons Ave", location:"South side", artist:"Ryan Orewiler", funder:"Artist Funded", flag:null, photo:"https://parsonsave.github.io/parsonsave/766%20Parsons%20Ave.jpg"},
     {name:"All People's Fresh Market Mural", category:"Murals", address:"945 Parsons Ave", location:"North Side", artist:"John Sunami (with Community Support organized by April Sunami)", funder:"All People Arts (Community Development for All People)", flag:null, photo:"https://parsonsave.github.io/parsonsave/945%20Parsons%20Ave-N.jpg"},
@@ -298,7 +299,15 @@
     {name:"Walt Neil", category:"Street Banners", address:"No fixed site (displayed seasonally along Parsons Ave)", location:null, artist:"Raeghan Buchanan", funder:"614 Beautiful Grant", flag:null, photo:"https://parsonsave.github.io/parsonsave/Walt-Neil.jpg"}
   ];
 
-  const categories = ["All", ...Array.from(new Set(art.map(a => a.category))).sort()];
+  const today = new Date();
+  const visibleArt = art.filter(a => {
+    if (a.category === "Exhibition" && a.exhibitionEnd) {
+      return today <= new Date(a.exhibitionEnd + "T23:59:59");
+    }
+    return true;
+  });
+
+  const categories = ["All", ...Array.from(new Set(visibleArt.map(a => a.category))).sort()];
   let activeCategory = "All";
   let searchTerm = "";
 
@@ -309,8 +318,8 @@
   const searchEl = document.getElementById("search");
 
   function categoryCount(cat) {
-    if (cat === "All") return art.length;
-    return art.filter(a => a.category === cat).length;
+    if (cat === "All") return visibleArt.length;
+    return visibleArt.filter(a => a.category === cat).length;
   }
 
   function renderPills() {
@@ -335,8 +344,12 @@
     return inCategory && inSearch;
   }
 
+  function fmtDate(d) {
+    return new Date(d + "T00:00:00").toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
   function renderCards() {
-    const filtered = art.filter(matches);
+    const filtered = visibleArt.filter(matches);
     countRowEl.textContent = `${filtered.length} piece${filtered.length === 1 ? '' : 's'} shown`;
     emptyMsgEl.style.display = filtered.length ? "none" : "block";
 
@@ -348,10 +361,14 @@
         <div class="addr">${a.address}${a.location ? ` — ${a.location}` : ""}</div>
         <div class="meta"><b>Artist:</b> ${a.artist}</div>
         ${a.funder ? `<div class="meta"><b>Funder:</b> ${a.funder}</div>` : ""}
+        ${a.curator ? `<div class="meta"><b>Curated by:</b> ${a.curator}</div>` : ""}
+        ${a.exhibitionStart && a.exhibitionEnd ? `<div class="meta"><b>Runs:</b> ${fmtDate(a.exhibitionStart)} &ndash; ${fmtDate(a.exhibitionEnd)}</div>` : ""}
+        ${a.website ? `<div class="meta"><a href="${a.website}" target="_blank" rel="noopener">${a.website.replace(/^https?:\/\//,'')}</a></div>` : ""}
         ${a.flag ? `<div class="flag">${a.flag}</div>` : ""}
       </div>
     `).join("");
   }
+
 
   function openLightbox(src){
     document.getElementById('lightboxImg').src = src;
