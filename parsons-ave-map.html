@@ -150,9 +150,8 @@
 
 <nav class="sitenav">
   <a href="index.html">Home</a>
-  <a href="parsons-ave-directory.html">Directory</a>
-  <a href="parsons-ave-map.html" class="current">Map</a>
-  <a href="parsons-ave-4week.html">Next 4 Weeks</a>
+  <a href="parsons-ave-directory.html">Business Directory</a>
+  <a href="parsons-ave-map.html" class="current">Business Map</a>
   <a href="parsons-ave-art-directory.html">Street Art List</a>
   <a href="parsons-ave-art-map.html">Street Art Map</a>
 </nav>
@@ -165,34 +164,126 @@
 <div id="map"></div>
 
 <div class="legend">
-  <div><span class="dot event"></span>Has recurring/upcoming events</div>
-  <div><span class="dot normal"></span>No confirmed events</div>
+  <div><span class="dot normal"></span>Business</div>
 </div>
 
 <footer>
-  Data last updated July 23, 2026. Hours, ratings, and events may change — verify directly with the business before visiting.
+  Data last updated. Hours and details may change — verify directly with the business before visiting.
 </footer>
 
 <script>
   const businesses = [
-    {name:"The Mercury Diner", lat:39.951152, lng:-82.982748, address:"621 Parsons Ave", category:"Restaurant/Food", rating:4.3, phone:"+1 614-852-3036", website:"http://themercurydiner.com/", maps:"https://maps.google.com/?cid=10772334154208568096", event:null},
-    {name:"Alchemy Café", lat:39.9511234, lng:-82.9827089, address:"625 Parsons Ave", category:"Restaurant/Food", rating:4.1, phone:null, website:"https://www.ieatalchemy.com/", maps:"https://maps.google.com/?cid=7309185697606697616", event:null},
-    {name:"Comune", lat:39.9499619, lng:-82.9827201, address:"677 Parsons Ave", category:"Restaurant/Food", rating:4.7, phone:"+1 614-947-1012", website:"https://www.comune-restaurant.com/", maps:"https://maps.google.com/?cid=2078539393368119651", event:null},
-    {name:"Parsons North Brewing Company", lat:39.9498804, lng:-82.9827221, address:"685 Parsons Ave", category:"Bar/Brewery", rating:4.7, phone:"+1 614-824-4208", website:"http://parsonsnorth.com/", maps:"https://maps.google.com/?cid=4884628808325036382", event:"Weekly Trivia Night, Thursday Run Club, Bingo, and Euchre League. Quarterly Peter Parsons Trivia League finals — check parsonsnorth.com/events."},
-    {name:"East Public", lat:39.9497823, lng:-82.9828634, address:"687 Parsons Ave", category:"Event Venue", rating:null, phone:null, website:null, maps:"https://maps.google.com/?cid=11670775261102600258", event:null},
-    {name:"The Space Station Smoke Shop", lat:39.9480013, lng:-82.982861, address:"773 Parsons Ave", category:"Retail/Shop", rating:4.6, phone:null, website:null, maps:"https://maps.google.com/?cid=6618092428986219403", event:null},
-    {name:"Plank's Cafe & Pizzeria", lat:39.9484972, lng:-82.9828879, address:"743 Parsons Ave", category:"Restaurant/Food", rating:4.3, phone:"+1 614-445-7221", website:"https://www.plankscafe.com/", maps:"https://maps.google.com/?cid=2257936501950555863", event:null},
-    {name:"Pizzanos Express", lat:39.9473669, lng:-82.9823501, address:"804 Parsons Ave", category:"Restaurant/Food", rating:4.8, phone:"+1 614-824-1404", website:"https://pizzanosexpress.com/", maps:"https://maps.google.com/?cid=1787317908559200335", event:null},
-    {name:"All People's Fresh Market", lat:39.9445756, lng:-82.983283, address:"945 Parsons Ave", category:"Community/Nonprofit", rating:4.6, phone:"+1 614-445-7342", website:"http://www.4allpeople.org/freshmarket/", maps:"https://maps.google.com/?cid=15103820809653975561", event:null},
-    {name:"Free Store (UMC For All People)", lat:39.9443769, lng:-82.9827492, address:"946 Parsons Ave", category:"Community/Nonprofit", rating:4.5, phone:"+1 614-443-1713", website:"http://www.4allpeople.org/free-store", maps:"https://maps.google.com/?cid=8754442146206192935", event:null},
-    {name:"United Methodist Church For All People", lat:39.944367, lng:-82.982698, address:"946 Parsons Ave", category:"Community/Nonprofit", rating:4.7, phone:"+1 614-445-7342", website:"https://www.4allpeople.org/", maps:"https://maps.google.com/?cid=10871768442672426304", event:null},
-    {name:"aboutUs", lat:39.9436859, lng:-82.9831469, address:"975 Parsons Ave", category:"Retail/Shop", rating:4.6, phone:"+1 614-928-9101", website:null, maps:"https://maps.google.com/?cid=14823051011684019941", event:null},
-    {name:"Nook at The Creative Space", lat:39.9429603, lng:-82.982706, address:"1014 Parsons Ave Ste A", category:"Restaurant/Food", rating:4.8, phone:"+1 614-779-9191", website:"http://thenookspace.com/", maps:"https://maps.google.com/?cid=15498434539957579929", event:null},
-    {name:"Tee Jaye's Country Place", lat:39.9349237, lng:-82.9841053, address:"1385 Parsons Ave", category:"Restaurant/Food", rating:3.9, phone:"+1 614-444-6291", website:"http://www.teejayes.com/", maps:"https://maps.google.com/?cid=17286630677232320372", event:null},
-    {name:"Hair & Beauty Depot 3 (Parsons)", lat:39.9350309, lng:-82.9832257, address:"1400 Parsons Ave", category:"Beauty Supply", rating:5.0, phone:"+1 614-429-3450", website:null, maps:"https://maps.google.com/?cid=3688756942223426736", event:null},
-    {name:"NuFlava Gourmet Kitchen", lat:39.9318571, lng:-82.9836927, address:"1542 Parsons Ave", category:"Restaurant/Food", rating:4.8, phone:"+1 614-467-8790", website:"https://nuflavagourmetkitchen.com/", maps:"https://maps.google.com/?cid=15276524585613778434", event:null},
-    {name:"Smoke Outlet", lat:39.9298018, lng:-82.9843321, address:"1635 Parsons Ave", category:"Retail/Shop", rating:4.5, phone:"+1 614-449-1700", website:null, maps:"https://maps.google.com/?cid=6921156726911509516", event:null},
-    {name:"Infinity Plus Store & Hair Supplies", lat:39.9247188, lng:-82.9841534, address:"1880 Parsons Ave", category:"Beauty Supply", rating:4.2, phone:"+1 614-449-0021", website:null, maps:"https://maps.google.com/?cid=7622298261673312340", event:null}
+    {name:"CVS Pharmacy", lat:39.9518761, lng:-82.9828465, address:"591 E Livingston Ave", category:"Pharmacy", phone:"+1 614-464-2480", website:"https://www.cvs.com", maps:"https://www.google.com/maps?q=39.9518761,-82.9828465"},
+    {name:"The Mercury Diner", lat:39.951152, lng:-82.982748, address:"621 Parsons Ave", category:"Restaurant/Food", phone:"+1 614-852-3036", website:"http://themercurydiner.com/", maps:"https://maps.google.com/?cid=10772334154208568096"},
+    {name:"Alchemy Café", lat:39.9511234, lng:-82.9827089, address:"625 Parsons Ave", category:"Restaurant/Food", phone:"+1 614-305-7551", website:"https://www.ieatalchemy.com/", maps:"https://maps.google.com/?cid=7309185697606697616"},
+    {name:"Strut The Salon", lat:39.9510176, lng:-82.9826598, address:"627 Parsons Ave", category:"Personal Care", phone:"+1 614-565-6416", website:null, maps:"https://www.google.com/maps?q=39.9510176,-82.9826598"},
+    {name:"Stallion Station", lat:39.9502994, lng:-82.9828029, address:"665 Parsons Ave", category:"Gas Station/Convenience", phone:"+1 614-456-7330", website:null, maps:"https://www.google.com/maps?q=39.9502994,-82.9828029"},
+    {name:"Comune", lat:39.9499619, lng:-82.9827201, address:"677 Parsons Ave", category:"Restaurant/Food", phone:"+1 614-947-1012", website:"https://www.comune-restaurant.com/", maps:"https://maps.google.com/?cid=2078539393368119651"},
+    {name:"Parsons North Brewing Company", lat:39.9498804, lng:-82.9827221, address:"685 Parsons Ave", category:"Bar/Brewery", phone:"+1 614-824-4208", website:"http://parsonsnorth.com/", maps:"https://maps.google.com/?cid=4884628808325036382"},
+    {name:"East Public", lat:39.9497823, lng:-82.9828634, address:"687 Parsons Ave", category:"Event Venue", phone:null, website:null, maps:"https://maps.google.com/?cid=11670775261102600258"},
+    {name:"Kokomo Coffee & Juice Paradise", lat:39.9496895, lng:-82.9820551, address:"694 Parsons Ave", category:"Restaurant/Food", phone:"+1 614-615-5806", website:null, maps:"https://www.google.com/maps?q=39.9496895,-82.9820551"},
+    {name:"Compton Construction", lat:39.9496584, lng:-82.9828328, address:"691 Parsons Ave", category:"Professional Services", phone:"+1 614-949-4712", website:null, maps:"https://www.google.com/maps?q=39.9496584,-82.9828328"},
+    {name:"First Commonwealth Bank", lat:39.9495234, lng:-82.982757, address:"701 Parsons Ave", category:"Financial Services", phone:"+1 614-607-5980", website:"https://www.fcbanking.com", maps:"https://www.google.com/maps?q=39.9495234,-82.982757"},
+    {name:"Toro Meat Market", lat:39.9494816, lng:-82.9821409, address:"704 Parsons Ave", category:"Grocery/Market", phone:"+1 614-869-0099", website:null, maps:"https://www.google.com/maps?q=39.9494816,-82.9821409"},
+    {name:"Chase Bank", lat:39.948615, lng:-82.98246, address:"740 Parsons Ave", category:"Financial Services", phone:"+1 614-549-5917", website:"https://www.chase.com", maps:"https://www.google.com/maps?q=39.948615,-82.98246"},
+    {name:"Plank's Cafe & Pizzeria", lat:39.9484972, lng:-82.9828879, address:"743 Parsons Ave", category:"Restaurant/Food", phone:"+1 614-445-7221", website:"https://www.plankscafe.com/", maps:"https://maps.google.com/?cid=2257936501950555863"},
+    {name:"Reafco", lat:39.9481172, lng:-82.9830191, address:"765 Parsons Ave", category:"Real Estate", phone:"+1 614-662-1652", website:null, maps:"https://www.google.com/maps?q=39.9481172,-82.9830191"},
+    {name:"EJays", lat:39.9481139, lng:-82.982298, address:"766 Parsons Ave", category:"Retail/Shop", phone:"+1 614-449-2780", website:null, maps:"https://www.google.com/maps?q=39.9481139,-82.982298"},
+    {name:"The Space Station Smoke Shop", lat:39.9480013, lng:-82.982861, address:"773 Parsons Ave", category:"Smoke Shop/Dispensary", phone:"+1 614-401-8360", website:null, maps:"https://maps.google.com/?cid=6618092428986219403"},
+    {name:"Dixon Automotive", lat:39.9479157, lng:-82.9821407, address:"780 Parsons Ave", category:"Automotive", phone:"+1 614-654-0554", website:null, maps:"https://www.google.com/maps?q=39.9479157,-82.9821407"},
+    {name:"EZ Auto Sales / Little Bethlehem", lat:39.9478416, lng:-82.9832373, address:"779 Parsons Ave", category:"Automotive", phone:"+1 614-500-7272", website:null, maps:"https://www.google.com/maps?q=39.9478416,-82.9832373"},
+    {name:"Design Nails", lat:39.9476509, lng:-82.9824982, address:"790 Parsons Ave", category:"Personal Care", phone:"+1 614-444-1028", website:null, maps:"https://www.google.com/maps?q=39.9476509,-82.9824982"},
+    {name:"Street 2 Vintage", lat:39.9474635, lng:-82.9822231, address:"796 Parsons Ave", category:"Retail/Shop", phone:null, website:"https://street2vintage.com/", maps:"https://www.google.com/maps?q=39.9474635,-82.9822231"},
+    {name:"Focus Fitness 15", lat:39.9474231, lng:-82.9823497, address:"800 Parsons Ave", category:"Health & Wellness", phone:"+1 380-282-4620", website:null, maps:"https://www.google.com/maps?q=39.9474231,-82.9823497"},
+    {name:"Pizzanos Express", lat:39.9473669, lng:-82.9823501, address:"804 Parsons Ave", category:"Restaurant/Food", phone:"+1 614-824-1404", website:"https://pizzanosexpress.com/", maps:"https://maps.google.com/?cid=1787317908559200335"},
+    {name:"John's Tire and Brake Service", lat:39.947285, lng:-82.983154, address:"807 Parsons Ave", category:"Automotive", phone:"+1 614-453-0204", website:null, maps:"https://www.google.com/maps?q=39.947285,-82.983154"},
+    {name:"Parsons Motors", lat:39.9471363, lng:-82.9824609, address:"808 Parsons Ave", category:"Automotive", phone:"+1 614-929-5770", website:null, maps:"https://www.google.com/maps?q=39.9471363,-82.9824609"},
+    {name:"Inspiring Minds", lat:39.9468486, lng:-82.9829756, address:"827 Parsons Ave", category:"Health & Wellness", phone:"+1 614-674-6085", website:"https://inspiringminds.com/", maps:"https://www.google.com/maps?q=39.9468486,-82.9829756"},
+    {name:"Mobil Mart", lat:39.9468473, lng:-82.9826198, address:"830 Parsons Ave", category:"Gas Station/Convenience", phone:"+1 614-444-9700", website:null, maps:"https://www.google.com/maps?q=39.9468473,-82.9826198"},
+    {name:"Ibrahim's", lat:39.9468402, lng:-82.9832566, address:"817 Parsons Ave", category:"Automotive", phone:"+1 614-772-2245", website:null, maps:"https://www.google.com/maps?q=39.9468402,-82.9832566"},
+    {name:"ZCM2 Amazon", lat:39.9459638, lng:-82.9829725, address:"865 Parsons Ave", category:"Retail/Shop", phone:null, website:null, maps:"https://www.google.com/maps?q=39.9459638,-82.9829725"},
+    {name:"All God's Children", lat:39.945303, lng:-82.9831976, address:"895-C Parsons Ave", category:"Childcare & Education", phone:"+1 614-449-3234", website:null, maps:"https://www.google.com/maps?q=39.945303,-82.9831976"},
+    {name:"Slurping Wok", lat:39.9453029, lng:-82.9831967, address:"895 Parsons Ave", category:"Restaurant/Food", phone:"+1 614-696-4008", website:null, maps:"https://www.google.com/maps?q=39.9453029,-82.9831967"},
+    {name:"Bake Me Happy", lat:39.9443168, lng:-82.9834602, address:"500 E Whittier St", category:"Retail/Shop", phone:"+1 614-477-3642", website:null, maps:"https://www.google.com/maps?q=39.9443168,-82.9834602"},
+    {name:"Sacred Hand Tattoo Society", lat:39.944017, lng:-82.982836, address:"960 Parsons Ave", category:"Personal Care", phone:"+1 614-670-7249", website:null, maps:"https://www.google.com/maps?q=39.944017,-82.982836"},
+    {name:"Metro By T-Mobile", lat:39.9439952, lng:-82.9827022, address:"968 Parsons Ave", category:"Retail/Shop", phone:"+1 614-732-0030", website:"https://www.metrobyt-mobile.com", maps:"https://www.google.com/maps?q=39.9439952,-82.9827022"},
+    {name:"Evans Deventer", lat:39.9439802, lng:-82.982844, address:"964 Parsons Ave", category:"Retail/Shop", phone:null, website:"https://www.evans-deventer.com/", maps:"https://www.google.com/maps?q=39.9439802,-82.982844"},
+    {name:"Shell", lat:39.9439314, lng:-82.9832147, address:"959 Parsons Ave", category:"Gas Station/Convenience", phone:"+1 614-884-1733", website:null, maps:"https://www.google.com/maps?q=39.9439314,-82.9832147"},
+    {name:"Boom Boom Tacos", lat:39.9438601, lng:-82.982727, address:"970 Parsons Ave", category:"Restaurant/Food", phone:"+1 614-670-7919", website:null, maps:"https://www.google.com/maps?q=39.9438601,-82.982727"},
+    {name:"aboutUs", lat:39.9436859, lng:-82.9831469, address:"975 Parsons Ave", category:"Retail/Shop", phone:"+1 614-928-9101", website:null, maps:"https://maps.google.com/?cid=14823051011684019941"},
+    {name:"Our Star Kids", lat:39.9433155, lng:-82.9828308, address:"1000 Parsons Ave", category:"Childcare & Education", phone:"+1 614-549-7238", website:null, maps:"https://www.google.com/maps?q=39.9433155,-82.9828308"},
+    {name:"Herlihy Moving & Storage", lat:39.9433155, lng:-82.9828308, address:"1000 Parsons Ave", category:"Moving & Storage", phone:"+1 614-977-1962", website:null, maps:"https://www.google.com/maps?q=39.9433155,-82.9828308"},
+    {name:"JPS Print", lat:39.9430061, lng:-82.9827909, address:"1014 Parsons Ave", category:"Professional Services", phone:"+1 614-235-8947", website:null, maps:"https://www.google.com/maps?q=39.9430061,-82.9827909"},
+    {name:"Nook at The Creative Space", lat:39.9429603, lng:-82.982706, address:"1014 Parsons Ave Ste A", category:"Restaurant/Food", phone:"+1 614-779-9191", website:"http://thenookspace.com/", maps:"https://maps.google.com/?cid=15498434539957579929"},
+    {name:"Family Ties Automotive", lat:39.9429388, lng:-82.9833041, address:"1011 Parsons Ave", category:"Automotive", phone:"+1 614-572-1411", website:null, maps:"https://www.google.com/maps?q=39.9429388,-82.9833041"},
+    {name:"Auto Outlet", lat:39.9423081, lng:-82.9835539, address:"1043 Parsons Ave", category:"Automotive", phone:"+1 614-443-8733", website:null, maps:"https://www.google.com/maps?q=39.9423081,-82.9835539"},
+    {name:"Good Grip Tires", lat:39.9421576, lng:-82.9828635, address:"1048 Parsons Ave", category:"Automotive", phone:"+1 614-696-4015", website:null, maps:"https://www.google.com/maps?q=39.9421576,-82.9828635"},
+    {name:"Childcare Training Ohio", lat:39.9419488, lng:-82.9828972, address:"1064 Parsons Ave", category:"Childcare & Education", phone:"+1 614-721-7222", website:null, maps:"https://www.google.com/maps?q=39.9419488,-82.9828972"},
+    {name:"Rumours", lat:39.9416635, lng:-82.9835449, address:"1071 Parsons Ave", category:"Bar/Brewery", phone:"+1 614-826-0067", website:null, maps:"https://www.google.com/maps?q=39.9416635,-82.9835449"},
+    {name:"Boost Mobile", lat:39.9413642, lng:-82.9829615, address:"1090 Parsons Ave", category:"Retail/Shop", phone:"+1 614-443-1551", website:"https://www.boostmobile.com", maps:"https://www.google.com/maps?q=39.9413642,-82.9829615"},
+    {name:"Shoulders Up Barber Boutique", lat:39.9413, lng:-82.9830548, address:"1092 Parsons Ave", category:"Personal Care", phone:"+1 614-209-9484", website:null, maps:"https://www.google.com/maps?q=39.9413,-82.9830548"},
+    {name:"Goal Chasers", lat:39.9409366, lng:-82.9827697, address:"506 Cline Ave", category:"Health & Wellness", phone:"+1 614-596-7368", website:null, maps:"https://www.google.com/maps?q=39.9409366,-82.9827697"},
+    {name:"Two Dollar Radio Headquarters", lat:39.940626, lng:-82.982906, address:"1124 Parsons Ave", category:"Retail/Shop", phone:"+1 614-725-1505", website:null, maps:"https://www.google.com/maps?q=39.940626,-82.982906"},
+    {name:"Bushman's Food Market", lat:39.9402217, lng:-82.9836934, address:"1145 Parsons Ave", category:"Grocery/Market", phone:"+1 614-674-6123", website:null, maps:"https://www.google.com/maps?q=39.9402217,-82.9836934"},
+    {name:"Morning Stars Learning Center", lat:39.9401142, lng:-82.9836675, address:"1149 Parsons Ave", category:"Childcare & Education", phone:"+1 614-525-0758", website:null, maps:"https://www.google.com/maps?q=39.9401142,-82.9836675"},
+    {name:"Lakeside Heating & Cooling", lat:39.9400203, lng:-82.9829579, address:"1154 Parsons Ave", category:"Professional Services", phone:"+1 833-246-4581", website:null, maps:"https://www.google.com/maps?q=39.9400203,-82.9829579"},
+    {name:"Legit Auto Sales / MG&E Automotive Group", lat:39.9399172, lng:-82.9835455, address:"1153 Parsons Ave", category:"Automotive", phone:"+1 614-584-9123 / +1 330-264-9990", website:null, maps:"https://www.google.com/maps?q=39.9399172,-82.9835455"},
+    {name:"Families First Creation & Funeral", lat:39.9397995, lng:-82.9830423, address:"1166 Parsons Ave", category:"Funeral Services", phone:"+1 614-444-3200", website:null, maps:"https://www.google.com/maps?q=39.9397995,-82.9830423"},
+    {name:"Mercy Motors", lat:39.9395214, lng:-82.9837426, address:"1175 Parsons Ave", category:"Automotive", phone:"+1 614-754-7467", website:null, maps:"https://www.google.com/maps?q=39.9395214,-82.9837426"},
+    {name:"Lara Cars", lat:39.9394894, lng:-82.9829036, address:"1188 Parsons Ave", category:"Automotive", phone:"+1 380-238-9944", website:null, maps:"https://www.google.com/maps?q=39.9394894,-82.9829036"},
+    {name:"Bingo Bikes", lat:39.9391242, lng:-82.9835967, address:"1195 Parsons Ave", category:"Retail/Shop", phone:"+1 614-937-4150", website:null, maps:"https://www.google.com/maps?q=39.9391242,-82.9835967"},
+    {name:"Rent a Center", lat:39.9390618, lng:-82.9829579, address:"1200 Parsons Ave", category:"Retail/Shop", phone:"+1 614-449-1100", website:"https://www.rentacenter.com", maps:"https://www.google.com/maps?q=39.9390618,-82.9829579"},
+    {name:"Shatter House Smoke Shop", lat:39.9387051, lng:-82.9831935, address:"1216 Parsons Ave", category:"Smoke Shop/Dispensary", phone:"+1 614-316-1801", website:null, maps:"https://www.google.com/maps?q=39.9387051,-82.9831935"},
+    {name:"U-Haul", lat:39.9386287, lng:-82.9836061, address:"1211 Parsons Ave", category:"Moving & Storage", phone:"+1 614-478-6623", website:"https://www.uhaul.com", maps:"https://www.google.com/maps?q=39.9386287,-82.9836061"},
+    {name:"Roof Savers", lat:39.9385115, lng:-82.9831227, address:"1226 Parsons Ave", category:"Professional Services", phone:"+1 614-245-5232", website:null, maps:"https://www.google.com/maps?q=39.9385115,-82.9831227"},
+    {name:"King Cash Auto Sales", lat:39.9384897, lng:-82.98315, address:"1230 Parsons Ave", category:"Automotive", phone:"+1 614-525-0010", website:null, maps:"https://www.google.com/maps?q=39.9384897,-82.98315"},
+    {name:"Grandma's Pizza", lat:39.938172, lng:-82.983105, address:"1242 Parsons Ave", category:"Restaurant/Food", phone:"+1 614-449-0777", website:null, maps:"https://www.google.com/maps?q=39.938172,-82.983105"},
+    {name:"Complete Healthcare", lat:39.937988, lng:-82.9838515, address:"1255 Parsons Ave", category:"Health & Wellness", phone:"+1 614-882-4343", website:null, maps:"https://www.google.com/maps?q=39.937988,-82.9838515"},
+    {name:"The Hiro Gym", lat:39.9377558, lng:-82.9839543, address:"1263 Parsons Ave", category:"Health & Wellness", phone:"+1 614-472-6834", website:null, maps:"https://www.google.com/maps?q=39.9377558,-82.9839543"},
+    {name:"Lev's Pawn Shop", lat:39.937545, lng:-82.9837103, address:"1275 Parsons Ave", category:"Pawn Shop", phone:"+1 614-444-1171", website:null, maps:"https://www.google.com/maps?q=39.937545,-82.9837103"},
+    {name:"Heart & Home Property Management", lat:39.9373705, lng:-82.9837175, address:"1279 Parsons Ave", category:"Professional Services", phone:"+1 614-255-6452", website:null, maps:"https://www.google.com/maps?q=39.9373705,-82.9837175"},
+    {name:"Alberta's Pizza Kitchen", lat:39.9369559, lng:-82.9837977, address:"1297 Parsons Ave", category:"Restaurant/Food", phone:"+1 614-893-5448", website:null, maps:"https://www.google.com/maps?q=39.9369559,-82.9837977"},
+    {name:"Dave's Furniture", lat:39.9364499, lng:-82.983739, address:"1325 Parsons Ave", category:"Home & Furniture", phone:null, website:null, maps:"https://www.google.com/maps?q=39.9364499,-82.983739"},
+    {name:"DeRomeo's / Zenos Activewear", lat:39.9358603, lng:-82.9833878, address:"1354 Parsons Ave", category:"Retail/Shop", phone:"+1 614-443-0070", website:null, maps:"https://www.google.com/maps?q=39.9358603,-82.9833878"},
+    {name:"Bob's Tires", lat:39.935666, lng:-82.9832728, address:"1360 Parsons Ave", category:"Automotive", phone:"+1 614-745-1905", website:null, maps:"https://www.google.com/maps?q=39.935666,-82.9832728"},
+    {name:"Hair & Beauty Depot 3 (Parsons)", lat:39.9350309, lng:-82.9832257, address:"1400 Parsons Ave", category:"Beauty Supply", phone:"+1 614-429-3450", website:null, maps:"https://maps.google.com/?cid=3688756942223426736"},
+    {name:"Tee Jaye's Country Place", lat:39.9349237, lng:-82.9841053, address:"1385 Parsons Ave", category:"Restaurant/Food", phone:"+1 614-444-6291", website:"http://www.teejayes.com/", maps:"https://maps.google.com/?cid=17286630677232320372"},
+    {name:"Kroger", lat:39.9343403, lng:-82.9854737, address:"1441 Parsons Ave", category:"Grocery/Market", phone:"+1 614-445-5727", website:"https://www.kroger.com", maps:"https://www.google.com/maps?q=39.9343403,-82.9854737"},
+    {name:"Advanced Auto Parts", lat:39.9340011, lng:-82.9834646, address:"1432 Parsons Ave", category:"Automotive", phone:"+1 614-449-2910", website:"https://www.advanceautoparts.com", maps:"https://www.google.com/maps?q=39.9340011,-82.9834646"},
+    {name:"O'Reilly Auto Parts", lat:39.9336162, lng:-82.9840497, address:"1455 Parsons Ave", category:"Automotive", phone:"+1 614-444-5352", website:"https://www.oreillyauto.com", maps:"https://www.google.com/maps?q=39.9336162,-82.9840497"},
+    {name:"Rallys", lat:39.9336134, lng:-82.9834981, address:"1460 Parsons Ave", category:"Restaurant/Food", phone:"+1 614-443-0471", website:"https://www.rallys.com", maps:"https://www.google.com/maps?q=39.9336134,-82.9834981"},
+    {name:"Super Laundry", lat:39.9332108, lng:-82.9843521, address:"1477 Parsons Ave", category:"Personal Care", phone:"+1 614-443-2860", website:null, maps:"https://www.google.com/maps?q=39.9332108,-82.9843521"},
+    {name:"Ridge Subarue Motors", lat:39.9332048, lng:-82.9833827, address:"1484 Parsons Ave", category:"Automotive", phone:"+1 614-824-3400", website:null, maps:"https://www.google.com/maps?q=39.9332048,-82.9833827"},
+    {name:"Parsons Express Carry Out", lat:39.9322662, lng:-82.9837069, address:"1526 Parsons Ave", category:"Restaurant/Food", phone:"+1 614-928-3404", website:null, maps:"https://www.google.com/maps?q=39.9322662,-82.9837069"},
+    {name:"Dark Arrow Tattoo", lat:39.9319546, lng:-82.9836876, address:"1536 Parsons Ave", category:"Personal Care", phone:"+1 380-282-0644", website:null, maps:"https://www.google.com/maps?q=39.9319546,-82.9836876"},
+    {name:"NuFlava Gourmet Kitchen", lat:39.9318571, lng:-82.9836927, address:"1542 Parsons Ave", category:"Restaurant/Food", phone:"+1 614-467-8790", website:"https://nuflavagourmetkitchen.com/", maps:"https://maps.google.com/?cid=15276524585613778434"},
+    {name:"Humble Dispensary", lat:39.9316464, lng:-82.9836227, address:"1558 Parsons Ave", category:"Smoke Shop/Dispensary", phone:"+1 614-429-3981", website:null, maps:"https://www.google.com/maps?q=39.9316464,-82.9836227"},
+    {name:"Hands Auto Radiator", lat:39.9313284, lng:-82.9836895, address:"1572 Parsons Ave", category:"Automotive", phone:"+1 614-444-1410", website:null, maps:"https://www.google.com/maps?q=39.9313284,-82.9836895"},
+    {name:"Thornton's Barber Shop", lat:39.9312422, lng:-82.9843358, address:"1571 Parsons Ave", category:"Personal Care", phone:"+1 380-235-3655", website:null, maps:"https://www.google.com/maps?q=39.9312422,-82.9843358"},
+    {name:"Shrimp Lips", lat:39.9302069, lng:-82.9838552, address:"1624 Parsons Ave", category:"Restaurant/Food", phone:"+1 614-230-2554", website:null, maps:"https://www.google.com/maps?q=39.9302069,-82.9838552"},
+    {name:"Cook & Son Pallay Funeral Home", lat:39.9301029, lng:-82.9844925, address:"1631 Parsons Ave", category:"Funeral Services", phone:"+1 614-444-7861", website:null, maps:"https://www.google.com/maps?q=39.9301029,-82.9844925"},
+    {name:"Smoke Outlet", lat:39.9298018, lng:-82.9843321, address:"1635 Parsons Ave", category:"Smoke Shop/Dispensary", phone:"+1 614-449-1700", website:null, maps:"https://maps.google.com/?cid=6921156726911509516"},
+    {name:"Parsons Market", lat:39.9295994, lng:-82.9836931, address:"1650 Parsons Ave", category:"Grocery/Market", phone:"+1 614-443-9695", website:null, maps:"https://www.google.com/maps?q=39.9295994,-82.9836931"},
+    {name:"Ace Hardware", lat:39.9293122, lng:-82.9844435, address:"1665 Parsons Ave", category:"Hardware/Rental", phone:"+1 614-444-8963", website:"https://www.acehardware.com", maps:"https://www.google.com/maps?q=39.9293122,-82.9844435"},
+    {name:"Parsons Depot", lat:39.9277191, lng:-82.9844451, address:"1739 Parsons Ave", category:"Retail/Shop", phone:null, website:null, maps:"https://www.google.com/maps?q=39.9277191,-82.9844451"},
+    {name:"Kwamekutz Barber Shop", lat:39.9276191, lng:-82.9843964, address:"1741 Parsons Ave", category:"Personal Care", phone:"+1 614-260-8279", website:null, maps:"https://www.google.com/maps?q=39.9276191,-82.9843964"},
+    {name:"Columbus Pawn Shop", lat:39.9276093, lng:-82.9844001, address:"1743 Parsons Ave", category:"Pawn Shop", phone:"+1 614-444-7296", website:null, maps:"https://www.google.com/maps?q=39.9276093,-82.9844001"},
+    {name:"That 1 Spot Barber Shop", lat:39.9275696, lng:-82.9844018, address:"1745 Parsons Ave", category:"Personal Care", phone:null, website:null, maps:"https://www.google.com/maps?q=39.9275696,-82.9844018"},
+    {name:"The Citadel", lat:39.9272693, lng:-82.9844485, address:"1761 Parsons Ave", category:"Event Venue", phone:"+1 614-504-9673", website:null, maps:"https://www.google.com/maps?q=39.9272693,-82.9844485"},
+    {name:"Mary's Little Lamb Daycare", lat:39.9264025, lng:-82.9839867, address:"1800 Parsons Ave", category:"Childcare & Education", phone:"+1 614-947-1966", website:null, maps:"https://www.google.com/maps?q=39.9264025,-82.9839867"},
+    {name:"Tony's Tax Service", lat:39.9259181, lng:-82.9838317, address:"1828 Parsons Ave", category:"Professional Services", phone:"+1 614-444-7452", website:null, maps:"https://www.google.com/maps?q=39.9259181,-82.9838317"},
+    {name:"Laugh & Learn Daycare", lat:39.9255607, lng:-82.9841869, address:"1846 Parsons Ave", category:"Childcare & Education", phone:null, website:null, maps:"https://www.google.com/maps?q=39.9255607,-82.9841869"},
+    {name:"Schwarz Tax Service", lat:39.9253477, lng:-82.9841513, address:"1856 Parsons Ave", category:"Professional Services", phone:"+1 614-445-0610", website:null, maps:"https://www.google.com/maps?q=39.9253477,-82.9841513"},
+    {name:"House of Cai", lat:39.9253433, lng:-82.9840563, address:"1854 Parsons Ave", category:"Retail/Shop", phone:"+1 614-832-1488", website:"https://houseofcaioh.square.site/", maps:"https://www.google.com/maps?q=39.9253433,-82.9840563"},
+    {name:"First Financial Bank", lat:39.925094, lng:-82.984707, address:"1865 Parsons Ave", category:"Financial Services", phone:"+1 614-681-7800", website:"https://www.bankatfirst.com", maps:"https://www.google.com/maps?q=39.925094,-82.984707"},
+    {name:"Infinity Plus Store & Hair Supplies", lat:39.9247188, lng:-82.9841534, address:"1880 Parsons Ave", category:"Beauty Supply", phone:"+1 614-449-0021", website:null, maps:"https://maps.google.com/?cid=7622298261673312340"},
+    {name:"Lev's Pawnshop", lat:39.9244382, lng:-82.9841691, address:"1900 Parsons Ave", category:"Pawn Shop", phone:"+1 614-444-6204", website:null, maps:"https://www.google.com/maps?q=39.9244382,-82.9841691"},
+    {name:"Ace's Empire", lat:39.9243297, lng:-82.9841832, address:"1904 Parsons Ave", category:"Retail/Shop", phone:null, website:null, maps:"https://www.google.com/maps?q=39.9243297,-82.9841832"},
+    {name:"Opus Woodworking", lat:39.9241186, lng:-82.9841376, address:"1904 Parsons Ave", category:"Retail/Shop", phone:"+1 614-580-2006", website:null, maps:"https://www.google.com/maps?q=39.9241186,-82.9841376"},
+    {name:"Bex Rx Pharmacy", lat:39.9239066, lng:-82.9842484, address:"1924 Parsons Ave", category:"Pharmacy", phone:"+1 614-449-8000", website:null, maps:"https://www.google.com/maps?q=39.9239066,-82.9842484"},
+    {name:"Appliance & Mattress Center", lat:39.9234695, lng:-82.9842111, address:"1942 Parsons Ave", category:"Home & Furniture", phone:"+1 614-445-8840", website:null, maps:"https://www.google.com/maps?q=39.9234695,-82.9842111"},
+    {name:"South Side Café", lat:39.9233143, lng:-82.9846896, address:"1951 Parsons Ave", category:"Restaurant/Food", phone:"+1 614-563-4957", website:null, maps:"https://www.google.com/maps?q=39.9233143,-82.9846896"},
+    {name:"The Technician Dojo", lat:39.9224375, lng:-82.984814, address:"1991 Parsons Ave", category:"Health & Wellness", phone:"+1 614-946-7608", website:null, maps:"https://www.google.com/maps?q=39.9224375,-82.984814"}
   ];
 
   const map = L.map('map', { scrollWheelZoom: true }).setView([39.9375, -82.9835], 15);
@@ -202,12 +293,12 @@
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  function makeIcon(hasEvent){
+  function makeIcon(){
     return L.divIcon({
       className: '',
       html: `<div style="
         width:16px;height:16px;border-radius:50%;
-        background:${hasEvent ? '#689760' : '#6e92ae'};
+        background:#6e92ae;
         border:2px solid #f3f6f1;
         box-shadow:0 1px 3px rgba(0,0,0,0.4);
       "></div>`,
@@ -218,13 +309,11 @@
   }
 
   businesses.forEach(b => {
-    const marker = L.marker([b.lat, b.lng], { icon: makeIcon(!!b.event) }).addTo(map);
+    const marker = L.marker([b.lat, b.lng], { icon: makeIcon() }).addTo(map);
     let html = `<div class="popup-title">${b.name}</div>`;
     html += `<div class="popup-cat">${b.category}</div>`;
     html += `<div class="popup-row">${b.address}, Columbus, OH</div>`;
-    if (b.rating) html += `<div class="popup-row">★ ${b.rating}</div>`;
     if (b.phone) html += `<div class="popup-row">${b.phone}</div>`;
-    if (b.event) html += `<div class="popup-event">${b.event}</div>`;
     html += `<div class="popup-links" style="margin-top:8px;">`;
     html += `<a href="${b.maps}" target="_blank" rel="noopener">View on Maps</a>`;
     if (b.website) html += `<a href="${b.website}" target="_blank" rel="noopener">Website</a>`;
