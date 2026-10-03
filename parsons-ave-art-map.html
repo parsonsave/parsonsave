@@ -128,6 +128,14 @@
     border-left:3px solid var(--gold);
     font-size:0.75rem;
   }
+  .popup-gallery-link{
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:0.75rem;
+    color:var(--brick-dark);
+    text-decoration:underline;
+    cursor:pointer;
+    margin:-4px 0 8px;
+  }
   .popup-thumb{
     width:100%;
     max-width:220px;
@@ -154,6 +162,39 @@
     border-radius:4px;
     box-shadow:0 8px 30px rgba(0,0,0,0.5);
   }
+  .lb-btn{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:48px;
+    height:48px;
+    border:none;
+    border-radius:50%;
+    background:rgba(243,246,241,0.18);
+    color:#fff;
+    font-size:2rem;
+    line-height:1;
+    cursor:pointer;
+    display:none;
+  }
+  .lb-btn:hover{background:rgba(243,246,241,0.35);}
+  .lb-prev{left:16px;}
+  .lb-next{right:16px;}
+  .lb-counter{
+    position:absolute;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    color:#f3f6f1;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:0.85rem;
+    background:rgba(0,0,0,0.45);
+    padding:4px 12px;
+    border-radius:12px;
+    display:none;
+  }
+  #lightbox.multi .lb-btn{display:block;}
+  #lightbox.multi .lb-counter{display:block;}
   footer{
     position:absolute;
     z-index:1000;
@@ -199,8 +240,11 @@
   fixed site and aren't mapped — see the Street Art List. Some utility box locations are approximate (nearest intersection).
 </footer>
 
-<div id="lightbox" onclick="this.classList.remove('open')">
-  <img id="lightboxImg" src="" alt="Enlarged artwork photo">
+<div id="lightbox" onclick="closeLightbox()">
+  <button class="lb-btn lb-prev" onclick="event.stopPropagation(); stepLightbox(-1)" aria-label="Previous photo">&#8249;</button>
+  <img id="lightboxImg" src="" alt="Enlarged artwork photo" onclick="event.stopPropagation(); lbImageClick()">
+  <button class="lb-btn lb-next" onclick="event.stopPropagation(); stepLightbox(1)" aria-label="Next photo">&#8250;</button>
+  <div class="lb-counter" id="lbCounter"></div>
 </div>
 
 <script>
@@ -213,7 +257,7 @@
     {name:"Welcome to Southern Orchards", category:"Murals", lat:39.9443769, lng:-82.9827492, address:"946 Parsons Ave", artist:"Walt Neil", funder:"Nationwide Children's Hospital", photo:"https://parsonsave.github.io/parsonsave/946%20Parsons%20Ave.jpg"},
     {name:"Untitled (704 Parsons Ave)", category:"Murals", lat:39.9495076, lng:-82.9821405, address:"704 Parsons Ave", artist:"Bill Marple (left)/Justin Withrow (right)", funder:"Kokomo Coffee & Juice", photo:"https://parsonsave.github.io/parsonsave/704-Parsons.jpg"},
     {name:"Every Color Has a Place", category:"Murals", lat:39.9443233, lng:-82.9834596, address:"500 E Whittier St", artist:"Mark Warren Jacques", funder:"Bake Me Happy", photo:"https://parsonsave.github.io/parsonsave/500%20E%20Whittier%20St.jpg"},
-    {name:"Community Happens Here", category:"Murals", lat:39.9434739, lng:-82.9826737, address:"530 Reinhard Ave", artist:"Al Dilorenzo (coordinator), Adam Brouliette, Sydnee Spivey, Nia Richardson, Carlos Roa, Christopher Cropper, Liz Hensley et al.", funder:"614 Beautiful grant", photo:"https://parsonsave.github.io/parsonsave/530%20Reinhard%20St-N.jpg"},
+    {name:"Community Happens Here", category:"Murals", lat:39.9434739, lng:-82.9826737, address:"530 Reinhard Ave", artist:"Al Dilorenzo (coordinator), Adam Brouliette, Sydnee Spivey, Nia Richardson, Carlos Roa, Christopher Cropper, Liz Hensley et al.", funder:"614 Beautiful grant", photo:"https://parsonsave.github.io/parsonsave/530%20Reinhard%20St-N.jpg", gallery:["https://parsonsave.github.io/parsonsave/530ReinhardN-1.jpeg", "https://parsonsave.github.io/parsonsave/530ReinhardN-2.jpeg", "https://parsonsave.github.io/parsonsave/530ReinhardN-3.jpeg", "https://parsonsave.github.io/parsonsave/530ReinhardN-4.jpeg", "https://parsonsave.github.io/parsonsave/530ReinhardN-5.jpeg", "https://parsonsave.github.io/parsonsave/530ReinhardN-6.jpeg", "https://parsonsave.github.io/parsonsave/530ReinhardN-7.jpeg", "https://parsonsave.github.io/parsonsave/530ReinhardN-8.jpeg", "https://parsonsave.github.io/parsonsave/530ReinhardN-9.jpeg", "https://parsonsave.github.io/parsonsave/530ReinhardN-10.jpeg"]},
     {name:"Welcome to Ganthers Place", category:"Murals", lat:39.9434739, lng:-82.9826737, address:"530 Reinhard Ave, Columbus, OH 43206", artist:"Walt Neil et al. (Walt Neil Mural League)", funder:"All People Arts (Walt Neil Mural League)", photo:"https://parsonsave.github.io/parsonsave/530%20Reinhard%20Ave.jpg"},
     {name:"Unknown (827 Parsons Ave)", category:"Murals", lat:39.9468486, lng:-82.9829756, address:"827 Parsons Ave", artist:"Scott Thompson", funder:"Artist Funded", photo:"https://parsonsave.github.io/parsonsave/827-Parsons.png"},
     {name:"Reflexions of Us", category:"Murals", lat:39.9416625, lng:-82.9835448, address:"1071 Parsons Ave", artist:"Carlos Roa", funder:"Rumours", photo:"https://parsonsave.github.io/parsonsave/1071%20Parsons%20Ave.jpg"},
@@ -279,11 +323,12 @@
   }
 
   const today = new Date();
-  art.forEach(a => {
+  art.forEach((a, artIdx) => {
     if (a.category === "Exhibition" && a.exhibitionEnd && today > new Date(a.exhibitionEnd + "T23:59:59")) return; // auto-hide closed exhibitions
     const marker = L.marker([a.lat, a.lng], { icon: makeIcon(a.category) }).addTo(map);
     let html = "";
-    if (a.photo) html += `<img class="popup-thumb" src="${a.photo}" alt="${a.name}" onclick="openLightbox('${a.photo}')">`;
+    if (a.photo) html += `<img class="popup-thumb" src="${a.photo}" alt="${a.name}" onclick="openArtLightbox(${artIdx})">`;
+    if (a.photo && a.gallery) html += `<div class="popup-gallery-link" onclick="openArtLightbox(${artIdx})">&#128247; View all ${a.gallery.length + 1} photos</div>`;
     html += `<div class="popup-title">${a.name}</div>`;
     html += `<div class="popup-cat">${a.category}</div>`;
     html += `<div class="popup-row">${a.address}, Columbus, OH</div>`;
@@ -299,10 +344,44 @@
     marker.bindPopup(html);
   });
 
-  function openLightbox(src){
-    document.getElementById('lightboxImg').src = src;
+  // ---- Lightbox with optional multi-photo gallery ----
+  let lbImages = [];
+  let lbIndex = 0;
+
+  function updateLightbox() {
+    const box = document.getElementById('lightbox');
+    document.getElementById('lightboxImg').src = lbImages[lbIndex];
+    box.classList.toggle('multi', lbImages.length > 1);
+    document.getElementById('lbCounter').textContent = `${lbIndex + 1} of ${lbImages.length}`;
+  }
+  function showLightbox(images, index) {
+    lbImages = images;
+    lbIndex = index || 0;
+    updateLightbox();
     document.getElementById('lightbox').classList.add('open');
   }
+  function stepLightbox(delta) {
+    if (lbImages.length < 2) return;
+    lbIndex = (lbIndex + delta + lbImages.length) % lbImages.length;
+    updateLightbox();
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+  function lbImageClick() {
+    if (lbImages.length > 1) stepLightbox(1); else closeLightbox();
+  }
+  function openLightbox(src) { showLightbox([src], 0); }
+  function openArtLightbox(i) {
+    const a = art[i];
+    showLightbox([a.photo].concat(a.gallery || []), 0);
+  }
+  document.addEventListener('keydown', function (e) {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    else if (e.key === 'ArrowRight') stepLightbox(1);
+    else if (e.key === 'ArrowLeft') stepLightbox(-1);
+  });
 </script>
 
 </body>
