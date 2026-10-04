@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parsons Avenue — Vacant Properties</title>
+<style>
+  :root{
+    --brick:#6e92ae;
+    --brick-dark:#4f697d;
+    --cream:#f3f6f1;
+    --paper:#fffdf9;
+    --ink:#262826;
+    --mortar:#a7cdb7;
+    --gold:#689760;
+    --muted:#8a7f6f;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--cream);color:var(--ink);font-family:Arial,Helvetica,sans-serif;}
+
+  header{
+    background:var(--brick);
+    color:var(--cream);
+    padding:36px 24px 28px;
+    text-align:center;
+    border-bottom:4px solid var(--brick-dark);
+  }
+  header .eyebrow{
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    color:var(--mortar);
+    margin-bottom:8px;
+  }
+  header h1{
+    margin:0 0 6px 0;
+    font-family:Georgia,serif;
+    font-size:2rem;
+  }
+  header p.sub{
+    margin:0 auto;
+    font-size:0.92rem;
+    color:var(--mortar);
+    max-width:560px;
+  }
+
+  .controls{
+    max-width:1080px;
+    margin:0 auto;
+    padding:24px 20px 0;
+  }
+  #search{
+    width:100%;
+    padding:12px 16px;
+    font-size:1rem;
+    border:1px solid var(--mortar);
+    border-radius:4px;
+    background:var(--paper);
+    color:var(--ink);
+    margin-bottom:16px;
+  }
+  #search:focus{outline:2px solid var(--brick);outline-offset:1px;}
+
+  .pills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:22px;
+  }
+  .pill{
+    border:1px solid var(--mortar);
+    background:var(--paper);
+    color:var(--ink);
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:0.78rem;
+    cursor:pointer;
+    user-select:none;
+  }
+  .pill.active{
+    background:var(--brick);
+    border-color:var(--brick);
+    color:#fff;
+  }
+  .pill:hover:not(.active){background:var(--mortar);}
+  .pill:focus-visible{outline:2px solid var(--brick-dark);outline-offset:2px;}
+
+  .count-row{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 20px;
+    font-size:0.8rem;
+    color:var(--muted);
+    margin-bottom:10px;
+  }
+
+  .grid{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 20px 40px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+    gap:16px;
+  }
+
+  .card{
+    background:var(--paper);
+    border:1px solid var(--mortar);
+    border-radius:6px;
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .card .cat{
+    display:inline-block;
+    align-self:flex-start;
+    font-size:0.62rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    background:var(--mortar);
+    color:var(--ink);
+    padding:2px 8px;
+    border-radius:10px;
+    margin-bottom:4px;
+  }
+  .card .cat.land{background:#d5e6a3;}
+  .card h3{
+    margin:0;
+    font-family:Georgia,serif;
+    font-size:1.08rem;
+    color:var(--brick-dark);
+  }
+  .card .meta{font-size:0.82rem;}
+  .card .meta b{font-weight:700;color:var(--ink);}
+  .card .links{
+    margin-top:auto;
+    padding-top:8px;
+    font-size:0.8rem;
+  }
+  .card .links a{color:var(--brick-dark);text-decoration:none;}
+  .card .links a:hover{text-decoration:underline;}
+
+  .empty{
+    max-width:1080px;
+    margin:0 auto;
+    padding:40px 20px;
+    text-align:center;
+    color:var(--muted);
+    font-style:italic;
+  }
+
+  footer{
+    text-align:center;
+    font-size:0.75rem;
+    color:var(--muted);
+    padding:20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Columbus, Ohio &middot; South Side</div>
+  <h1>Parsons Avenue Vacant Properties</h1>
+  <p class="sub">Vacant buildings and vacant land along Parsons Avenue, listed north to south.</p>
+</header>
+
+<div class="controls">
+  <input type="text" id="search" placeholder="Search by address, owner, or parcel number…">
+  <div class="pills" id="pills"></div>
+</div>
+
+<div class="count-row" id="countRow"></div>
+<div class="grid" id="grid"></div>
+<div class="empty" id="emptyMsg" style="display:none;"></div>
+
+<footer>
+  Ownership and parcel information may change &mdash; verify before contacting owners.
+</footer>
+
+<script>
+  const properties = [
+    {category:"Vacant Property", address:"633 Parsons Avenue", parcel:"010-296118-00", owner:"JMM Real Estate Investments Inc.", lat:39.9509292, lng:-82.9826362, maps:"https://www.google.com/maps?q=39.9509292,-82.9826362"},
+    {category:"Vacant Land", address:"716-718 Parsons Avenue", parcel:"010-011081-00", owner:"Parsons 724 LLC", lat:39.9492013, lng:-82.982211, maps:"https://www.google.com/maps?q=39.9492013,-82.982211"},
+    {category:"Vacant Land", address:"720 Parsons Avenue", parcel:"010-042101-00", owner:"Parsons 724 LLC", lat:39.9490733, lng:-82.9822244, maps:"https://www.google.com/maps?q=39.9490733,-82.9822244"},
+    {category:"Vacant Land", address:"722 Parsons Avenue", parcel:"010-016439-00", owner:"Parsons 724 LLC", lat:39.9489986, lng:-82.9822322, maps:"https://www.google.com/maps?q=39.9489986,-82.9822322"},
+    {category:"Vacant Land", address:"724 Parsons Avenue", parcel:"010-011082-00", owner:"Parsons 724 LLC", lat:39.9489298, lng:-82.9821342, maps:"https://www.google.com/maps?q=39.9489298,-82.9821342"},
+    {category:"Vacant Property", address:"813 Parsons Avenue", parcel:"010-049619-00", owner:"Church of God of Mountain Assembly Bd of Trs", lat:39.9471186, lng:-82.9830165, maps:"https://www.google.com/maps?q=39.9471186,-82.9830165"},
+    {category:"Vacant Land", address:"921-923 Parsons Avenue", parcel:"010-055972-00", owner:"921-923 Parsons LLC", lat:39.9448815, lng:-82.9832581, maps:"https://www.google.com/maps?q=39.9448815,-82.9832581"},
+    {category:"Vacant Property", address:"535 East Whittier Street", parcel:"010-045727-00", owner:"MWAG RE II LLC", lat:39.9440007, lng:-82.9825055, maps:"https://www.google.com/maps?q=39.9440007,-82.9825055"},
+    {category:"Vacant Property", address:"980 Parsons Avenue", parcel:"010-017861-00", owner:"Med-Apt Inc", lat:39.9435568, lng:-82.982664, maps:"https://www.google.com/maps?q=39.9435568,-82.982664"},
+    {category:"Vacant Land", address:"1058 Parsons Avenue", parcel:"010-017702-00", owner:"1058 Parsons Avenue LLC", lat:39.9419488, lng:-82.9828972, maps:"https://www.google.com/maps?q=39.9419488,-82.9828972"},
+    {category:"Vacant Property", address:"1076 Parsons Avenue", parcel:"010-021133-00", owner:"ABN AbsProp001 LLC", lat:39.9416247, lng:-82.9829722, maps:"https://www.google.com/maps?q=39.9416247,-82.9829722"},
+    {category:"Vacant Property", address:"1203 Parsons Avenue", parcel:"010-013547-00", owner:"John F Whitlock", lat:39.9389336, lng:-82.983701, maps:"https://www.google.com/maps?q=39.9389336,-82.983701"},
+    {category:"Vacant Property", address:"1220 Parsons Avenue", parcel:"010-053034-00", owner:"Sheu Property Holdings LLC", lat:39.9386368, lng:-82.9832004, maps:"https://www.google.com/maps?q=39.9386368,-82.9832004"},
+    {category:"Vacant Land", address:"1309-1311 Parsons Avenue", parcel:"010-070269-00", owner:"CBS Partnership", lat:39.9366996, lng:-82.9837368, maps:"https://www.google.com/maps?q=39.9366996,-82.9837368"},
+    {category:"Vacant Property", address:"1344 Parsons Avenue", parcel:"010-023303-00", owner:"Digital Nostalgia LLC", lat:39.936027, lng:-82.9832951, maps:"https://www.google.com/maps?q=39.936027,-82.9832951"},
+    {category:"Vacant Property", address:"1348 Parsons Avenue", parcel:"010-003704-00", owner:"Digital Nostalgia LLC", lat:39.9359452, lng:-82.9833413, maps:"https://www.google.com/maps?q=39.9359452,-82.9833413"},
+    {category:"Vacant Property", address:"1351 Parsons Avenue", parcel:"010-022197-00", owner:"Beacon Home Builders Inc", lat:39.935864, lng:-82.9839683, maps:"https://www.google.com/maps?q=39.935864,-82.9839683"},
+    {category:"Vacant Property", address:"1493 Parsons Avenue", parcel:"010-063875-00", owner:"EAB Holdings LLC", lat:39.9328138, lng:-82.9841787, maps:"https://www.google.com/maps?q=39.9328138,-82.9841787"},
+    {category:"Vacant Property", address:"1515-1521 Parsons Avenue", parcel:"010-036992-00", owner:"1501 Parsons LLC", lat:39.9323477, lng:-82.984018, maps:"https://www.google.com/maps?q=39.9323477,-82.984018"},
+    {category:"Vacant Land", address:"1525 Parsons Avenue", parcel:"010-025437-00", owner:"1501 Parsons LLC", lat:39.9321813, lng:-82.9838957, maps:"https://www.google.com/maps?q=39.9321813,-82.9838957"},
+    {category:"Vacant Property", address:"1596 Parsons Avenue", parcel:"010-021097-00", owner:"Sri Ratna IV LLC", lat:39.9307454, lng:-82.9836259, maps:"https://www.google.com/maps?q=39.9307454,-82.9836259"},
+    {category:"Vacant Land", address:"1598 Parsons Avenue", parcel:"010-075461-00", owner:"Yadegari Alex", lat:39.9307199, lng:-82.9836481, maps:"https://www.google.com/maps?q=39.9307199,-82.9836481"},
+    {category:"Vacant Land", address:"1692 Parsons Avenue", parcel:"010-031180-00", owner:"Sandbox Holdings LLC", lat:39.9287284, lng:-82.9837957, maps:"https://www.google.com/maps?q=39.9287284,-82.9837957"},
+    {category:"Vacant Property", address:"1699 Parsons Avenue", parcel:"010-022456-00", owner:"1699 Parsons LLC", lat:39.9285503, lng:-82.9844153, maps:"https://www.google.com/maps?q=39.9285503,-82.9844153"},
+    {category:"Vacant Land", address:"1715 Parsons Avenue", parcel:"010-039191-00", owner:"1717 Parsons LLC", lat:39.9282732, lng:-82.9843159, maps:"https://www.google.com/maps?q=39.9282732,-82.9843159"},
+    {category:"Vacant Land", address:"1717-1719 Parsons Avenue", parcel:"010-049460-00", owner:"1717 Parsons LLC", lat:39.9281985, lng:-82.9843219, maps:"https://www.google.com/maps?q=39.9281985,-82.9843219"},
+    {category:"Vacant Property", address:"1725 Parsons Avenue", parcel:"010-057403-00", owner:"Discount Auto Repair Inc", lat:39.9279861, lng:-82.9844496, maps:"https://www.google.com/maps?q=39.9279861,-82.9844496"},
+    {category:"Vacant Land", address:"1729-1731 Parsons Avenue", parcel:"010-010406-00", owner:"City of Columbus Ohio", lat:39.9278943, lng:-82.9845556, maps:"https://www.google.com/maps?q=39.9278943,-82.9845556"},
+    {category:"Vacant Property", address:"1751 Parsons Avenue", parcel:"010-080483-00", owner:"Ulloa Rommy", lat:39.9274504, lng:-82.9844068, maps:"https://www.google.com/maps?q=39.9274504,-82.9844068"},
+    {category:"Vacant Land", address:"1755 Parsons Avenue", parcel:"010-017853-00", owner:"Central Ohio Community Improvement Corp", lat:39.9273811, lng:-82.98448, maps:"https://www.google.com/maps?q=39.9273811,-82.98448"},
+    {category:"Vacant Property", address:"1766 Parsons Avenue", parcel:"010-006372-00", owner:"Rabi Abdallah, Pastor", lat:39.9271963, lng:-82.9839027, maps:"https://www.google.com/maps?q=39.9271963,-82.9839027"},
+    {category:"Vacant Property", address:"1776 Parsons Avenue", parcel:"010-019846-00", owner:"SSL Properties LLC", lat:39.9269703, lng:-82.9837977, maps:"https://www.google.com/maps?q=39.9269703,-82.9837977"},
+    {category:"Vacant Land", address:"1785-1787 Parsons Avenue", parcel:"010-048074-00", owner:"Blanchard Lee TTEE", lat:39.9267273, lng:-82.9845671, maps:"https://www.google.com/maps?q=39.9267273,-82.9845671"},
+    {category:"Vacant Property", address:"1816 Parsons Avenue", parcel:"010-037950-00", owner:"Tack Property Holdings LLC", lat:39.9261318, lng:-82.9840367, maps:"https://www.google.com/maps?q=39.9261318,-82.9840367"},
+    {category:"Vacant Land", address:"1825 Parsons Avenue", parcel:"010-022733-00", owner:"Mattox Ricky A", lat:39.9260022, lng:-82.9847064, maps:"https://www.google.com/maps?q=39.9260022,-82.9847064"},
+    {category:"Vacant Land", address:"1830 Parsons Avenue", parcel:"010-037945-00", owner:"Tarquinio Carmine", lat:39.9258835, lng:-82.9839106, maps:"https://www.google.com/maps?q=39.9258835,-82.9839106"},
+    {category:"Vacant Land", address:"1832 Parsons Avenue", parcel:"010-037944-00", owner:"Tarquinio Carmine", lat:39.9257691, lng:-82.9839703, maps:"https://www.google.com/maps?q=39.9257691,-82.9839703"},
+    {category:"Vacant Property", address:"1846 Parsons Avenue", parcel:"010-043074-00", owner:"Barbara L Fabeck Tr", lat:39.9255581, lng:-82.9841596, maps:"https://www.google.com/maps?q=39.9255581,-82.9841596"},
+    {category:"Vacant Land", address:"1850 Parsons Avenue", parcel:"010-030201-00", owner:"Fabeck Barbara L Trust", lat:39.9254685, lng:-82.9840245, maps:"https://www.google.com/maps?q=39.9254685,-82.9840245"},
+    {category:"Vacant Property", address:"1904 Parsons Avenue", parcel:"010-022720-00", owner:"L L I J M A CO", lat:39.9243297, lng:-82.9841832, maps:"https://www.google.com/maps?q=39.9243297,-82.9841832"},
+    {category:"Vacant Property", address:"1918 Parsons Avenue", parcel:"010-029038-00", owner:"J Bammers LLC", lat:39.9240024, lng:-82.9841801, maps:"https://www.google.com/maps?q=39.9240024,-82.9841801"},
+    {category:"Vacant Land", address:"1926-1930 Parsons Avenue", parcel:"010-051727-00", owner:"Fabeck Barbara L Trust", lat:39.9238289, lng:-82.9842051, maps:"https://www.google.com/maps?q=39.9238289,-82.9842051"},
+    {category:"Vacant Property", address:"1931 Parsons Avenue", parcel:"010-015293-00", owner:"Argous LLC", lat:39.923698, lng:-82.984759, maps:"https://www.google.com/maps?q=39.923698,-82.984759"},
+    {category:"Vacant Property", address:"1935-1937 Parsons Avenue", parcel:"010-035967-00", owner:"Bylys Properties LLC", lat:39.9236316, lng:-82.9847401, maps:"https://www.google.com/maps?q=39.9236316,-82.9847401"},
+    {category:"Vacant Property", address:"1958 Parsons Avenue", parcel:"010-015768-00", owner:"Barbara L Fabeck Tr", lat:39.9232285, lng:-82.9842292, maps:"https://www.google.com/maps?q=39.9232285,-82.9842292"},
+    {category:"Vacant Property", address:"1955 Parsons Avenue", parcel:"010-016572-00", owner:"Sunny Hills Properties LTD", lat:39.9231625, lng:-82.9846582, maps:"https://www.google.com/maps?q=39.9231625,-82.9846582"},
+    {category:"Vacant Land", address:"1966 Parsons Avenue", parcel:"010-022738-00", owner:"Fabeck Barbara L Trust", lat:39.9230242, lng:-82.9845487, maps:"https://www.google.com/maps?q=39.9230242,-82.9845487"},
+    {category:"Vacant Land", address:"1964 Parsons Avenue", parcel:"010-016882-00", owner:"Fabeck Barbara L Trust", lat:39.923013, lng:-82.984193, maps:"https://www.google.com/maps?q=39.923013,-82.984193"},
+    {category:"Vacant Land", address:"1968 Parsons Avenue", parcel:"010-022739-00", owner:"Fabeck Barbara L Trust", lat:39.9229997, lng:-82.9843098, maps:"https://www.google.com/maps?q=39.9229997,-82.9843098"},
+    {category:"Vacant Land", address:"1977-1979 Parsons Avenue", parcel:"010-034942-00", owner:"L&N-UP Alum Creek LLC", lat:39.9226876, lng:-82.9849614, maps:"https://www.google.com/maps?q=39.9226876,-82.9849614"},
+    {category:"Vacant Land", address:"1983 Parsons Avenue", parcel:"010-000206-00", owner:"Just Right Properties Management", lat:39.9226135, lng:-82.9849645, maps:"https://www.google.com/maps?q=39.9226135,-82.9849645"},
+    {category:"Vacant Land", address:"1985-1987 Parsons Avenue", parcel:"010-052760-00", owner:"Just Right Properties Management", lat:39.9224375, lng:-82.984814, maps:"https://www.google.com/maps?q=39.9224375,-82.984814"}
+  ];
+
+  // Both categories are always listed, even if one is empty.
+  const categories = ["All", "Vacant Property", "Vacant Land"];
+  let activeCategory = "All";
+  let searchTerm = "";
+
+  const pillsEl = document.getElementById("pills");
+  const gridEl = document.getElementById("grid");
+  const countRowEl = document.getElementById("countRow");
+  const emptyMsgEl = document.getElementById("emptyMsg");
+  const searchEl = document.getElementById("search");
+
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function categoryCount(cat) {
+    if (cat === "All") return properties.length;
+    return properties.filter(p => p.category === cat).length;
+  }
+
+  function renderPills() {
+    pillsEl.innerHTML = categories.map(cat =>
+      `<button class="pill ${cat === activeCategory ? 'active' : ''}" data-cat="${esc(cat)}">${esc(cat)} (${categoryCount(cat)})</button>`
+    ).join("");
+    pillsEl.querySelectorAll(".pill").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeCategory = btn.dataset.cat;
+        render();
+      });
+    });
+  }
+
+  function matches(p) {
+    const inCategory = activeCategory === "All" || p.category === activeCategory;
+    const term = searchTerm.trim().toLowerCase();
+    const inSearch = !term ||
+      p.address.toLowerCase().includes(term) ||
+      p.owner.toLowerCase().includes(term) ||
+      p.parcel.toLowerCase().includes(term);
+    return inCategory && inSearch;
+  }
+
+  function renderCards() {
+    const filtered = properties.filter(matches);
+    countRowEl.textContent = `${filtered.length} propert${filtered.length === 1 ? 'y' : 'ies'} shown`;
+
+    if (filtered.length === 0) {
+      emptyMsgEl.style.display = "block";
+      emptyMsgEl.textContent = (activeCategory !== "All" && categoryCount(activeCategory) === 0 && !searchTerm.trim())
+        ? `No ${activeCategory.toLowerCase()} listings yet.`
+        : "No properties match your search.";
+    } else {
+      emptyMsgEl.style.display = "none";
+    }
+
+    gridEl.innerHTML = filtered.map(p => `
+      <div class="card">
+        <span class="cat ${p.category === 'Vacant Land' ? 'land' : ''}">${esc(p.category)}</span>
+        <h3>${esc(p.address)}</h3>
+        <div class="meta"><b>Parcel:</b> ${esc(p.parcel)}</div>
+        <div class="meta"><b>Owner:</b> ${esc(p.owner)}</div>
+        <div class="links"><a href="${esc(p.maps)}" target="_blank" rel="noopener">View on Maps</a></div>
+      </div>
+    `).join("");
+  }
+
+  function render() {
+    renderPills();
+    renderCards();
+  }
+
+  searchEl.addEventListener("input", (e) => {
+    searchTerm = e.target.value;
+    renderCards();
+  });
+
+  render();
+</script>
+
+</body>
+</html>
