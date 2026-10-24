@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parsons Ave log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f3f5f7;
+    --surface: #ffffff;
+    --ink: #1c2530;
+    --muted: #5a6573;
+    --rule: #c9d1da;
+    --accent: #2f5d8a;
+    --tile: #e3e8ee;
+    color-scheme: light;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #151a20;
+      --surface: #1d242c;
+      --ink: #e6eaef;
+      --muted: #9aa5b2;
+      --rule: #34404c;
+      --accent: #8fb6dc;
+      --tile: #26303a;
+      color-scheme: dark;
+    }
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+
+  main {
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 4rem;
+  }
+
+  h1 {
+    font-size: clamp(1.75rem, 4vw, 2.4rem);
+    line-height: 1.15;
+    margin: 0 0 2.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  /* Timeline: date column on the left, entry on the right */
+  .entry {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 1.5rem;
+    padding: 1.75rem 0;
+    border-top: 1px solid var(--rule);
+  }
+  .entry:last-child { border-bottom: 1px solid var(--rule); }
+
+  .date {
+    font-weight: 700;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    padding-top: 0.15rem;
+  }
+
+  .entry h2 {
+    font-size: 1.25rem;
+    margin: 0 0 1rem;
+  }
+
+  .entry p {
+    margin: 0.85rem 0 0;
+    max-width: 38rem;
+  }
+  .notes { margin: 1rem 0 0; padding-left: 1.1rem; max-width: 38rem; }
+  .notes li { margin: 0.35rem 0; }
+
+  /* Media tiles */
+  .media {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+  .media.single { grid-template-columns: minmax(0, 22rem); }
+
+  .media a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    aspect-ratio: 4 / 3;
+    background: var(--tile);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .media a.video { aspect-ratio: 16 / 9; }
+  .media a:hover { border-color: var(--accent); }
+  .media a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  .media a img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+    display: block;
+  }
+  .media a:has(img) { overflow: hidden; }
+
+  .media svg { width: 1.8rem; height: 1.8rem; fill: var(--accent); }
+
+  @media (max-width: 560px) {
+    .entry { grid-template-columns: 1fr; gap: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Parsons Ave log</h1>
+
+  <!-- 10/15/2026 -->
+  <section class="entry">
+    <div class="date">10/15/2026</div>
+    <div>
+      <h2>2007 to 2025 how it got worse</h2>
+      <div class="media single">
+        <a class="video" id="video1" href="https://drive.google.com/file/d/1y2DXKhmIPRNf05wSdDz_zJieyqHc_l5Y/view?usp=drive_link">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          Video 1
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10/17/2026 – From yesterday -->
+  <section class="entry">
+    <div class="date">10/17/2026</div>
+    <div>
+      <h2>From yesterday</h2>
+      <div class="media">
+        <a id="photo1" href="https://drive.google.com/file/d/1puznPaewyzlmka7SY0h8azdAS8yaemNW/view?usp=drive_link"><img src="https://drive.google.com/thumbnail?id=1puznPaewyzlmka7SY0h8azdAS8yaemNW&amp;sz=w1000" alt="Photo 1" loading="lazy" referrerpolicy="no-referrer"></a>
+        <a id="photo2" href="https://drive.google.com/file/d/1s4cOdPbPrfoP_LTo8SUNYwBghwVOzitP/view?usp=drive_link"><img src="https://drive.google.com/thumbnail?id=1s4cOdPbPrfoP_LTo8SUNYwBghwVOzitP&amp;sz=w1000" alt="Photo 2" loading="lazy" referrerpolicy="no-referrer"></a>
+        <a id="photo3" href="https://drive.google.com/file/d/1EsB9MU8V1SNSvemoqI1TyHEsdUePMNiw/view?usp=drive_link"><img src="https://drive.google.com/thumbnail?id=1EsB9MU8V1SNSvemoqI1TyHEsdUePMNiw&amp;sz=w1000" alt="Photo 3" loading="lazy" referrerpolicy="no-referrer"></a>
+        <a id="photo4" href="https://drive.google.com/file/d/1HP6E6O-LPk_Su7Runae2w10dxyX08mPr/view?usp=drive_link"><img src="https://drive.google.com/thumbnail?id=1HP6E6O-LPk_Su7Runae2w10dxyX08mPr&amp;sz=w1000" alt="Photo 4" loading="lazy" referrerpolicy="no-referrer"></a>
+        <a id="photo5" href="https://drive.google.com/file/d/1mIWRsDojPDjLLo2YRYid-cxFWwLfmGNK/view?usp=drive_link"><img src="https://drive.google.com/thumbnail?id=1mIWRsDojPDjLLo2YRYid-cxFWwLfmGNK&amp;sz=w1000" alt="Photo 5" loading="lazy" referrerpolicy="no-referrer"></a>
+      </div>
+      <ul class="notes">
+        <li>This is family with 2 infants there all the time</li>
+        <li>Also one girl gave birth to a baby in August is always there with new born</li>
+        <li>This lady with 2 strollers</li>
+      </ul>
+      <div class="media single">
+        <a id="photo6" href="https://drive.google.com/file/d/1bbjzc1DPR7cd1PQfiia_b0jTFD3Ccxa1/view?usp=drive_link"><img src="https://drive.google.com/thumbnail?id=1bbjzc1DPR7cd1PQfiia_b0jTFD3Ccxa1&amp;sz=w1000" alt="Photo 6" loading="lazy" referrerpolicy="no-referrer"></a>
+      </div>
+      <ul class="notes">
+        <li>How many children altogether?</li>
+        <li>This black couple with 2 kids</li>
+        <li>Another girl which I assume is very young maybe under 21 she is here on parsons ave for 2 years gave birth to a boy this summer</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 10/17/2026 – Thursday night -->
+  <section class="entry">
+    <div class="date">10/17/2026</div>
+    <div>
+      <h2>This from Thursday night 9 pm</h2>
+      <div class="media single">
+        <a id="photo7" href="https://drive.google.com/file/d/1zuiGBPmMC35SL1SQosyy0fOVH0Xajo-Y/view?usp=drive_link"><img src="https://drive.google.com/thumbnail?id=1zuiGBPmMC35SL1SQosyy0fOVH0Xajo-Y&amp;sz=w1000" alt="Photo 7" loading="lazy" referrerpolicy="no-referrer"></a>
+      </div>
+      <p>Another teenager couple here for one week around corner I caught them doing drugs behind my building last night</p>
+      <div class="media single">
+        <a class="video" id="video2" href="https://drive.google.com/file/d/1LRRwgeI9Jlsrcj_BeByMQ-xJ4BzB3YUN/view?usp=drive_link">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          Video 2
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10/18/2026 -->
+  <section class="entry">
+    <div class="date">10/18/2026</div>
+    <div>
+      <h2>These kids</h2>
+      <div class="media single">
+        <a id="photo8" href="https://drive.google.com/file/d/1Y8b50VV305NK6R1X0rFnyk0BC4z3DKql/view?usp=drive_link"><img src="https://drive.google.com/thumbnail?id=1Y8b50VV305NK6R1X0rFnyk0BC4z3DKql&amp;sz=w1000" alt="Photo 8" loading="lazy" referrerpolicy="no-referrer"></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10/21/2026 -->
+  <section class="entry">
+    <div class="date">10/21/2026</div>
+    <div>
+      <div class="media single">
+        <a class="video" id="video3" href="https://drive.google.com/file/d/1-EBCM3FeBbL5kaHPGxY52aeIwS1vYpfc/view?usp=sharing">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          Video 3
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
